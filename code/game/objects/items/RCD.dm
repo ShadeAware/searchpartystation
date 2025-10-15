@@ -62,7 +62,7 @@ TYPEINFO_DEF(/obj/item/construction)
 	return ..()
 
 /obj/item/construction/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return NONE
 
 	var/atom/target = interacting_with // Yes i am supremely lazy
@@ -77,7 +77,7 @@ TYPEINFO_DEF(/obj/item/construction)
 	return NONE
 
 /obj/item/construction/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return NONE
 
 	if(istype(tool, /obj/item/rcd_upgrade))

@@ -96,7 +96,6 @@
 	. = ..()
 	if(holder.has_reagent(/datum/reagent/medicine/epinephrine))
 		holder.remove_reagent(/datum/reagent/medicine/epinephrine, 2 * removed)
-	C.adjustPlasma(20 * removed)
 
 // Plasma will attempt to ignite at the ignition temperature.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)
@@ -145,7 +144,6 @@
 	. = ..()
 	if(holder.has_reagent(/datum/reagent/medicine/epinephrine))
 		holder.remove_reagent(/datum/reagent/medicine/epinephrine, 2 * removed)
-	C.adjustPlasma(20 * removed)
 	C.adjust_bodytemperature(-7 * TEMPERATURE_DAMAGE_COEFFICIENT * removed, C.get_body_temp_normal())
 
 /datum/reagent/toxin/lexorin

@@ -134,11 +134,16 @@
 	using.screen_loc = ui_borg_alerts
 	static_inventory += using
 
-	//Combat Mode
-	action_intent = new /atom/movable/screen/combattoggle/robot(null, src)
-	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
+//Intent
+	action_intent = new /atom/movable/screen/act_intent/robot()
+	action_intent.icon_state = mymob.a_intent
+	action_intent.hud = src
+
+//Combat Mode
+	combat_button = new /atom/movable/screen/combattoggle/robot(null, src)
+	combat_button.icon = ui_style
+	combat_button.screen_loc = ui_combat_toggle
+	static_inventory += combat_button
 
 //Health
 	healths = new /atom/movable/screen/healths/robot(null, src)

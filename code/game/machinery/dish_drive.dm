@@ -1,4 +1,4 @@
-/obj/machinery/dish_drive
+/*/obj/machinery/dish_drive
 	name = "dish drive"
 	desc = "A culinary marvel that uses matter-to-energy conversion to store dishes and shards. Convenient! \
 	Additional features include a vacuum function to suck in nearby dishes, and an automatic transfer beam that empties its contents into nearby disposal bins every now and then. \
@@ -52,7 +52,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/dish_drive/attackby(obj/item/I, mob/living/user, params)
-	if(is_type_in_list(I, collectable_items) && !user.combat_mode)
+	if(is_type_in_list(I, collectable_items) && !user.a_intent == INTENT_HARM)
 		if(!user.transferItemToLoc(I, src))
 			return
 		LAZYADD(dish_drive_contents, I)
@@ -134,4 +134,4 @@
 		flick("synthesizer_beam", src)
 	else
 		visible_message(span_notice("There are no disposable items in [src]!"))
-	time_since_dishes = world.time + 600
+	time_since_dishes = world.time + 600*/

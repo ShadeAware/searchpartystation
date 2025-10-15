@@ -139,7 +139,7 @@
 		to_chat(user, span_warning("Their hands are covered."))
 		return ITEM_INTERACT_BLOCKING
 
-	if(user != H && H.combat_mode && (H.body_position == STANDING_UP))
+	if(user != H && H.a_intent == INTENT_HARM && (H.body_position == STANDING_UP))
 		user.visible_message(span_warning("[user] tries to take prints from [H], but they move away."))
 		return ITEM_INTERACT_BLOCKING
 

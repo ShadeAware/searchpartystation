@@ -76,7 +76,7 @@
 	else
 		target.take_bodypart_damage(damage)
 
-	log_combat(user, target, "attacked", "[item.name]", "(Combat mode: [user.combat_mode ? "On" : "Off"])")
+	log_combat(user, target, "attacked", "[item.name]", "Eyestab")
 
 	var/obj/item/organ/eyes/eyes = target.getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)
@@ -98,7 +98,7 @@
 		to_chat(target, span_danger("Your eyes start to bleed profusely!"))
 
 	if (!target.is_blind() && !HAS_TRAIT(target, TRAIT_NEARSIGHT))
-		to_chat(target, span_danger("You have become nearsighted."))
+		to_chat(target, span_danger("Your vision worsens!"))
 
 	target.become_nearsighted(EYE_DAMAGE)
 
@@ -111,7 +111,7 @@
 
 	if (prob(eyes.damage - EYESTAB_BLEEDING_THRESHOLD + 1))
 		target.become_blind(EYE_DAMAGE)
-		to_chat(target, span_danger("You have become blind."))
+		to_chat(target, span_danger("You can't see!"))
 
 #undef CLUMSY_ATTACK_SELF_CHANCE
 #undef EYESTAB_BLEEDING_THRESHOLD

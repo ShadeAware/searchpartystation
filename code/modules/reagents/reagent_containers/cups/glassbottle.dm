@@ -40,7 +40,7 @@
 	if(.)
 		return
 
-	if(!user.combat_mode)
+	if(user.a_intent == INTENT_HELP)
 		return
 
 	if(!ismob(A))

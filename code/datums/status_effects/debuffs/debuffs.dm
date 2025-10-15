@@ -748,7 +748,8 @@
 			owner.log_message("used [held_item] due to a Muscle Spasm", LOG_ATTACK)
 			held_item.attack_self(owner)
 		if(3)
-			owner.set_combat_mode(TRUE)
+			var/prev_intent = owner.a_intent
+			owner.a_intent = INTENT_HARM
 
 			var/range = 1
 			if(istype(owner.get_active_held_item(), /obj/item/gun)) //get targets to shoot at
@@ -761,13 +762,14 @@
 				to_chat(owner, span_warning("Your arm spasms!"))
 				owner.log_message(" attacked someone due to a Muscle Spasm", LOG_ATTACK) //the following attack will log itself
 				owner.ClickOn(pick(targets))
-			owner.set_combat_mode(FALSE)
+			owner.a_intent = prev_intent
 		if(4)
+			var/prev_intent = owner.a_intent
 			owner.set_combat_mode(TRUE)
 			to_chat(owner, span_warning("Your arm spasms!"))
 			owner.log_message("attacked [owner.p_them()]self to a Muscle Spasm", LOG_ATTACK)
 			owner.ClickOn(owner)
-			owner.set_combat_mode(FALSE)
+			owner.a_intent = prev_intent
 		if(5)
 			if(owner.incapacitated())
 				return
@@ -950,8 +952,8 @@
 
 /datum/status_effect/amok/tick()
 	. = ..()
-	var/prev_combat_mode = owner.combat_mode
-	owner.set_combat_mode(TRUE)
+	var/prev_intent = owner.a_intent
+	owner.a_intent = INTENT_HARM
 
 	var/list/mob/living/targets = list()
 	for(var/mob/living/potential_target in oview(owner, 1))
@@ -961,7 +963,7 @@
 	if(LAZYLEN(targets))
 		owner.log_message(" attacked someone due to the amok debuff.", LOG_ATTACK) //the following attack will log itself
 		owner.ClickOn(pick(targets))
-	owner.set_combat_mode(prev_combat_mode)
+	owner.a_intent = prev_intent
 
 /datum/status_effect/cloudstruck
 	id = "cloudstruck"

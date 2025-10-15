@@ -39,6 +39,9 @@
 	if(!isliving(interacting_with))
 		return NONE
 
+	if(user.a_intent != INTENT_HARM)
+		return
+
 	var/mob/living/M = interacting_with
 
 	if(M.stat == DEAD && (M.butcher_results || M.guaranteed_butcher_results)) //can we butcher it?

@@ -40,7 +40,7 @@
 	name = "Radium"
 	description = "Radium is an alkaline earth metal. It is extremely radioactive."
 	reagent_state = SOLID
-	color = "#00CC00" // ditto
+	color = "#96aa96" // ditto
 	taste_description = "the colour blue and regret"
 	tox_damage = 1
 	material = null
@@ -69,10 +69,6 @@
 	color = "#2D2D2D"
 	taste_description = "bitterness"
 	taste_mult = 1.5
-
-
-/datum/reagent/stable_plasma/affect_blood(mob/living/carbon/C, removed)
-	C.adjustPlasma(10 * removed)
 
 /datum/reagent/fuel
 	name = "Welding Fuel"

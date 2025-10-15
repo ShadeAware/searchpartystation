@@ -34,6 +34,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/combo/combo_display
 
 	var/atom/movable/screen/action_intent
+	var/atom/movable/screen/combat_button
 	var/atom/movable/screen/zone_select
 	var/atom/movable/screen/pull_icon
 	var/atom/movable/screen/rest_icon
@@ -152,7 +153,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	QDEL_LIST(gunpoint_options)
 
 	inv_slots.Cut()
-	action_intent = null
+	combat_button = null
 	zone_select = null
 	pull_icon = null
 	gun_setting_icon = null
@@ -235,8 +236,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 			screenmob.client.screen += toggle_palette
 
-			if(action_intent)
-				action_intent.screen_loc = initial(action_intent.screen_loc) //Restore intent selection to the original position
+			if(combat_button)
+				combat_button.screen_loc = initial(combat_button.screen_loc) //Restore intent selection to the original position
 
 		if(HUD_STYLE_REDUCED) //Reduced HUD
 			hud_shown = FALSE //Governs behavior of other procs
@@ -254,9 +255,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 				var/atom/movable/screen/hand = hand_slots[h]
 				if(hand)
 					screenmob.client.screen += hand
-			if(action_intent)
-				screenmob.client.screen += action_intent //we want the intent switcher visible
-				action_intent.screen_loc = ui_acti_alt //move this to the alternative position, where zone_select usually is.
+			if(combat_button)
+				screenmob.client.screen += combat_button //we want the intent switcher visible
+				combat_button.screen_loc = ui_acti_alt //move this to the alternative position, where zone_select usually is.
 
 		if(HUD_STYLE_NOHUD) //No HUD
 			hud_shown = FALSE //Governs behavior of other procs

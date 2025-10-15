@@ -217,7 +217,7 @@
 	if(!vial.reagents.total_volume)
 		return ITEM_INTERACT_BLOCKING
 
-	log_attack("<font color='red'>[user.name] ([user.ckey]) applied [src] to [injectee.name] ([injectee.ckey]), which had [contained] (COMBAT MODE: [uppertext(user.combat_mode)]) (MODE: [mode])</font>")
+	log_attack("<font color='red'>[user.name] ([user.ckey]) applied [src] to [injectee.name] ([injectee.ckey]), which had [contained] (COMBAT MODE: [uppertext(user.a_intent == INTENT_HARM)]) (MODE: [mode])</font>")
 	if(injectee != user)
 		injectee.visible_message(span_danger("[user] uses the [src] on [injectee]!"), \
 						span_userdanger("[user] uses the [src] on you!"))

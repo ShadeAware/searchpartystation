@@ -32,7 +32,7 @@
 
 /obj/machinery/telephone
 	name = "phone - UNINITIALIZED"
-	desc = "It's a phone. You pick it up, select from the list of other phones, and scream at the other person. The voice quality isn't all that great."
+	desc = "A positively ancient communication device. Quite popular centuries ago, but have lost much of their utility in this day and age outside of novelty."
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "phone"
 
@@ -109,7 +109,7 @@
 		toggle_handset(user)
 
 /obj/machinery/telephone/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if((tool != handset) || user.combat_mode)
+	if((tool != handset) || user.a_intent == INTENT_HARM)
 		return NONE
 
 	if(handset_state == HANDSET_ONHOOK)

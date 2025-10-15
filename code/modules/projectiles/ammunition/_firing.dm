@@ -45,7 +45,7 @@
 	loaded_projectile.original = target
 	loaded_projectile.firer = user
 	loaded_projectile.fired_from = fired_from
-	loaded_projectile.hit_prone_targets = user.combat_mode
+	loaded_projectile.hit_prone_targets = user.a_intent == INTENT_HARM
 	if (zone_override)
 		loaded_projectile.aimed_def_zone = zone_override
 	else

@@ -212,7 +212,7 @@ TYPEINFO_DEF(/obj/item/airlock_painter/decal)
 	stored_custom_color = stored_color
 
 /obj/item/airlock_painter/decal/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent != INTENT_HELP)
 		return NONE
 
 	var/atom/target = interacting_with // Yes i am supremely lazy

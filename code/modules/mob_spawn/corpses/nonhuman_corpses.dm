@@ -26,13 +26,3 @@
 /obj/effect/mob_spawn/corpse/slime/special(mob/living/simple_animal/slime/spawned_slime)
 	. = ..()
 	spawned_slime.set_colour(slime_species)
-
-///dead facehuggers, great for xeno ruins so you can have a cool ruin without spiraling the entire round into xenomorph hell. also, this is a terrible terrible artifact of time
-/obj/effect/mob_spawn/corpse/facehugger
-	//mostly for unit tests to not get alarmed (which by all means it should because this is a mess)
-	mob_type = /obj/item/clothing/mask/facehugger
-
-/obj/effect/mob_spawn/corpse/facehugger/create(mob/user)
-	var/obj/item/clothing/mask/facehugger/spawned_facehugger = new mob_type(loc)
-	spawned_facehugger.Die()
-	qdel(src)

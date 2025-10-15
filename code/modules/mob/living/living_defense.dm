@@ -104,12 +104,12 @@
 	combat_mode = new_mode
 
 	if(combat_mode)
-		stats?.set_skill_modifier(4, /datum/rpg_skill/skirmish, SKILL_SOURCE_COMBAT_MODE)
+		src.face_mouse = TRUE
 	else
-		stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_COMBAT_MODE)
+		src.face_mouse = FALSE
 
-	if(hud_used?.action_intent)
-		hud_used.action_intent.update_appearance()
+	if(hud_used?.combat_button)
+		hud_used.combat_button.update_appearance()
 
 	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))
 		return
@@ -302,7 +302,7 @@
 			user.disarm(src)
 			return TRUE
 
-	if (!user.combat_mode)
+	if (!user.a_intent == INTENT_HARM)
 		return FALSE
 
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
@@ -343,7 +343,7 @@
 	return FALSE
 
 /mob/living/attack_larva(mob/living/carbon/alien/larva/L)
-	if(L.combat_mode)
+	if(L.a_intent == INTENT_HARM)
 		if(HAS_TRAIT(L, TRAIT_PACIFISM))
 			to_chat(L, span_warning("You don't want to hurt anyone!"))
 			return
@@ -375,7 +375,7 @@
 		user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 		return TRUE
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		if(HAS_TRAIT(user, TRAIT_PACIFISM))
 			to_chat(user, span_warning("You don't want to hurt anyone!"))
 			return FALSE

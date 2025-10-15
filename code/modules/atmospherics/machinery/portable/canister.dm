@@ -441,7 +441,7 @@ TYPEINFO_DEF(/obj/machinery/portable_atmospherics/canister)
 
 /obj/machinery/portable_atmospherics/canister/welder_act(mob/living/user, obj/item/tool)
 	. = ..()
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return FALSE
 	if(atom_integrity >= max_integrity)
 		return TRUE

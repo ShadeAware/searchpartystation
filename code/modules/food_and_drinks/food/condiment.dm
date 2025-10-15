@@ -70,7 +70,7 @@
 		to_chat(user, span_notice("You transfer [trans] units of the condiment to [interacting_with]."))
 		return ITEM_INTERACT_SUCCESS
 
-	if(!isliving(interacting_with) || user.combat_mode)
+	if(!isliving(interacting_with) || user.a_intent == INTENT_HARM)
 		return NONE
 
 	if(!reagents || !reagents.total_volume)

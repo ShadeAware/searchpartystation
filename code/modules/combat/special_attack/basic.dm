@@ -8,7 +8,6 @@
 	. = ..()
 	if(!.)
 		return
-
 	var/turf/T = get_step(user, direction)
 	return T?.IsReachableBy(user) && !isclosedturf(T)
 

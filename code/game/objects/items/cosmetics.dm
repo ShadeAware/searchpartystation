@@ -179,13 +179,6 @@
 
 	switch(location)
 		if(BODY_ZONE_PRECISE_MOUTH)
-			if(H.gender != MALE)
-				return ITEM_INTERACT_BLOCKING
-
-			if (H == user)
-				to_chat(user, span_warning("What kind of maniac would shave without a mirror?"))
-				return ITEM_INTERACT_BLOCKING
-
 			var/new_style = tgui_input_list(user, "Select a facial hairstyle", "Grooming", GLOB.facial_hairstyles_list)
 			if(isnull(new_style) || !user.canUseTopic(USE_CLOSE | USE_IGNORE_TK))
 				return ITEM_INTERACT_BLOCKING
@@ -202,9 +195,9 @@
 				return ITEM_INTERACT_SUCCESS
 
 		if(BODY_ZONE_HEAD)
-			if(!user.combat_mode)
+			if(user.a_intent == INTENT_HELP)
 				if (H == user)
-					to_chat(user, span_warning("What kind of maniac would cut their hair without a mirror?"))
+					to_chat(user, span_warning("You can't look at your own head, which makes styling your hair almost impossible."))
 					return ITEM_INTERACT_BLOCKING
 
 				var/new_style = tgui_input_list(user, "Select a hairstyle", "Grooming", GLOB.hairstyles_list)
@@ -216,7 +209,7 @@
 					return ITEM_INTERACT_BLOCKING
 
 				if(HAS_TRAIT(H, TRAIT_BALD))
-					to_chat(H, span_warning("[H] is just way too bald. Like, really really bald."))
+					to_chat(H, span_warning("[H] has no hair to style."))
 					return ITEM_INTERACT_BLOCKING
 
 				user.visible_message(span_notice("[user] tries to change [H]'s hairstyle using [src]."), span_notice("You try to change [H]'s hairstyle using [src]."))

@@ -80,6 +80,22 @@
 #define FAST_CUFFBREAK 1
 #define INSTANT_CUFFBREAK 2
 
+//intent defines
+#define INTENT_HELP   "help"
+#define INTENT_GRAB   "grab"
+#define INTENT_DISARM "disarm"
+#define INTENT_HARM   "harm"
+//NOTE: INTENT_HOTKEY_* defines are not actual intents!
+//they are here to support hotkeys
+#define INTENT_HOTKEY_LEFT  "left"
+#define INTENT_HOTKEY_RIGHT "right"
+
+//stance defines
+//Stances are essentially additional, situational modifiers to what your character is doing. Blocking, parrying, etc..
+#define STANCED_GUARDING "guardstance"
+#define STANCED_PARRYING "parrystance"
+#define STANCED_DODGING "dodgestance"
+
 //Grab levels
 #define GRAB_PASSIVE 0
 #define GRAB_AGGRESSIVE 1

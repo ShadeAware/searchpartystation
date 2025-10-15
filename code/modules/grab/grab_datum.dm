@@ -143,7 +143,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	G.is_currently_resolving_hit = TRUE
 
-	var/combat_mode = G.assailant.combat_mode
+	var/combat_mode = G.assailant.a_intent == INTENT_HARM
 	if(params[RIGHT_CLICK])
 		if(on_hit_disarm(G, target))
 			. = disarm_action || TRUE
@@ -438,7 +438,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	if(grab_action)
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = capitalize(grab_action)
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		if(harm_action)
 			context[SCREENTIP_CONTEXT_LMB] = capitalize(harm_action)
 

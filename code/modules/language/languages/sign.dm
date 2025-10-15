@@ -66,7 +66,7 @@
 		. = "incoherently [signs]"
 
 	else
-		if(speaker.combat_mode)
+		if(speaker.a_intent == INTENT_HARM)
 			return "aggressively [signs] with their hands"
 		else
 			return "[signs] with their hands"

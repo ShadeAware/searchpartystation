@@ -28,11 +28,21 @@
 	using.screen_loc = ui_swaphand_position(owner,2)
 	static_inventory += using
 
-	action_intent = new /atom/movable/screen/combattoggle/flashy(null, src)
-	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
+	if(mymob.possible_a_intents)
+		if(mymob.possible_a_intents.len == 4)
+			// All possible intents - full intent selector
+			action_intent = new /atom/movable/screen/act_intent/segmented
+		else
+			return
+		action_intent.icon_state = mymob.a_intent
+		action_intent.hud = src
+		static_inventory += action_intent
 
+	combat_button = new /atom/movable/screen/combattoggle/flashy()
+	combat_button.hud = src
+	combat_button.icon = ui_style
+	combat_button.screen_loc = ui_combat_toggle
+	static_inventory += combat_button
 
 	zone_select = new /atom/movable/screen/zone_sel(null, src)
 	zone_select.icon = ui_style

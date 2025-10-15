@@ -90,7 +90,7 @@ TYPEINFO_DEF(/obj/structure/flock)
 	if(.)
 		return
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		user.visible_message(span_danger("<b>[user]</b> punches <b>[src]."))
 		user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 		//playsound(src, 'sound/impact_sounds/Crystal_Hit_1.ogg', 50, TRUE, -1)

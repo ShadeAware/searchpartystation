@@ -117,7 +117,6 @@
 	/mob/living/simple_animal/hostile/retaliate/bat = "flapping",
 	/mob/living/simple_animal/hostile/retaliate/goat = "temperamental",
 	/mob/living/simple_animal/hostile/gorilla = "muscular",
-	/mob/living/simple_animal/hostile/alien/drone = "alien",
 	/mob/living/simple_animal/hostile/bee = "buzzing",
 	/mob/living/simple_animal/hostile/retaliate/goose = "honking",
 	/mob/living/simple_animal/hostile/retaliate/clown = "silly",

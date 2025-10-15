@@ -171,7 +171,7 @@
 	if (martial_result != MARTIAL_ATTACK_INVALID)
 		return martial_result
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK)) //Always drop item in hand, if no item, get stunned instead.
+	if(user.a_intent == INTENT_DISARM) //Always drop item in hand, if no item, get stunned instead.
 		var/obj/item/I = get_active_held_item()
 		if(I && !(I.item_flags & ABSTRACT) && dropItemToGround(I))
 			playsound(loc, 'sound/weapons/slash.ogg', 25, TRUE, -1)
@@ -194,7 +194,7 @@
 				to_chat(user, span_danger("You tackle [src] down!"))
 		return TRUE
 
-	if(!user.combat_mode)
+	if(user.a_intent == INTENT_HELP)
 		..() //shaking
 		return FALSE
 
@@ -235,7 +235,7 @@
 			to_chat(user, span_danger("You tackle [src] down!"))
 		return TRUE
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		if (w_uniform)
 			w_uniform.add_fingerprint(user)
 		var/damage = prob(90) ? rand(user.melee_damage_lower, user.melee_damage_upper) : 0
@@ -259,27 +259,6 @@
 		if(!dismembering_strike(user, user.zone_selected)) //Dismemberment successful
 			return TRUE
 		apply_damage(damage, BRUTE, affecting, armor_block)
-
-
-
-
-/mob/living/carbon/human/attack_larva(mob/living/carbon/alien/larva/L)
-	. = ..()
-	if(!.)
-		return //successful larva bite.
-	var/damage = rand(L.melee_damage_lower, L.melee_damage_upper)
-	if(!damage)
-		return
-	if(check_block(L, damage, "the [L.name]"))
-		return FALSE
-	if(stat != DEAD)
-		L.amount_grown = min(L.amount_grown + damage, L.max_grown)
-		var/obj/item/bodypart/affecting = get_bodypart(ran_zone(L.zone_selected))
-		if(!affecting)
-			affecting = get_bodypart(BODY_ZONE_CHEST)
-		var/armor_block = run_armor_check(affecting, BLUNT)
-		apply_damage(damage, BRUTE, affecting, armor_block)
-
 
 /mob/living/carbon/human/attack_basic_mob(mob/living/basic/user, list/modifiers)
 	. = ..()

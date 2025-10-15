@@ -192,16 +192,12 @@
 		return
 	ADD_TRAIT(C, TRAIT_STUNIMMUNE, type)
 	ADD_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
-	rage = new()
-	C.gain_trauma(rage, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/reagent/drug/bath_salts/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return
 	REMOVE_TRAIT(C, TRAIT_STUNIMMUNE, type)
 	REMOVE_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
-	if(rage)
-		QDEL_NULL(rage)
 
 /datum/reagent/drug/bath_salts/affect_blood(mob/living/carbon/C, removed)
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")

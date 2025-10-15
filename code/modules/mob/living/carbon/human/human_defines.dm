@@ -21,6 +21,7 @@
 
 	hud_type = /datum/hud/human
 	//pressure_resistance = 25
+	possible_a_intents = list(INTENT_HELP, INTENT_DISARM, INTENT_GRAB, INTENT_HARM)
 	can_buckle = TRUE
 	buckle_lying = 0
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID

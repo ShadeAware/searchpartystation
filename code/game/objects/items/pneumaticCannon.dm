@@ -91,7 +91,7 @@ TYPEINFO_DEF(/obj/item/pneumatic_cannon)
 	return TRUE
 
 /obj/item/pneumatic_cannon/attackby(obj/item/W, mob/living/user, params)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(istype(W, /obj/item/tank/internals))
 		if(!tank)

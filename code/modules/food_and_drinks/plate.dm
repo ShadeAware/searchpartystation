@@ -37,7 +37,7 @@
 	if(!iscarbon(A))
 		return
 
-	if(user.combat_mode && ishuman(A))
+	if(user.a_intent == INTENT_HARM && ishuman(A))
 		var/mob/living/carbon/human/victim = A
 		if(user.zone_selected == BODY_ZONE_HEAD)
 			user.do_attack_animation(victim, used_item = src)

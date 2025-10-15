@@ -114,7 +114,7 @@ TYPEINFO_DEF(/obj/structure/table)
 	var/mob/living/L = usr
 	if(!istype(L))
 		return
-	if(!L.combat_mode)
+	if(!L.a_intent == INTENT_HARM)
 		return
 	if(!can_interact(L))
 		return
@@ -136,7 +136,7 @@ TYPEINFO_DEF(/obj/structure/table)
 			try_place_pulled_onto_table(user, dropping)
 			return
 		var/mob/living/carbon/human/H = user
-		if(H.incapacitated() || H.body_position == LYING_DOWN || !H.combat_mode)
+		if(H.incapacitated() || H.body_position == LYING_DOWN || !H.a_intent == INTENT_HARM)
 			return
 		if(!H.Adjacent(src))
 			return FALSE
@@ -291,7 +291,7 @@ TYPEINFO_DEF(/obj/structure/table)
 			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 			return
 
-		if(user.combat_mode && grab)
+		if(user.a_intent == INTENT_HARM && grab)
 			switch(grab.current_grab.damage_stage)
 				if(GRAB_PASSIVE)
 					to_chat(user, span_warning("You need a better grip to do that!"))
@@ -417,7 +417,7 @@ TYPEINFO_DEF(/obj/structure/table)
 	if(.)
 		return .
 
-	if(!user.combat_mode || (tool.item_flags & NOBLUDGEON))
+	if(!user.a_intent == INTENT_HARM || (tool.item_flags & NOBLUDGEON))
 		return place_item(user, tool, modifiers)
 
 	return NONE
@@ -477,7 +477,7 @@ TYPEINFO_DEF(/obj/structure/table)
 	if(carried_mob == user) //Piggyback user.
 		return NONE
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		user.unbuckle_mob(carried_mob)
 		tablelimbsmash(user, carried_mob)
 		return ITEM_INTERACT_SUCCESS
@@ -1036,7 +1036,7 @@ TYPEINFO_DEF(/obj/structure/table/optable)
 		W.play_tool_sound(src)
 		deconstruct(TRUE)
 		return
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(user.transferItemToLoc(W, drop_location()))
 		return 1

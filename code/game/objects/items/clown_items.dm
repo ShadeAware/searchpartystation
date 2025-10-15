@@ -127,7 +127,7 @@
 
 
 /obj/item/soap/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return NONE
 
 	if(!check_allowed_items(interacting_with))

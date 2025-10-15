@@ -70,7 +70,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/syringe)
 
 	if(isliving(user))
 		var/mob/living/L = user
-		if(L.combat_mode)
+		if(L.a_intent == INTENT_HARM)
 			return FALSE
 
 	if(isliving(target))

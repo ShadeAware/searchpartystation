@@ -69,6 +69,7 @@
 
 /mob/living/carbon/human/get_status_tab_items()
 	. = ..()
+	. += "Intent: [a_intent]"
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
 	. += "Move Mode: [m_intent]"
 

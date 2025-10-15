@@ -3,7 +3,7 @@
 	if (..())
 		return TRUE
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(user.a_intent == INTENT_DISARM)
 		if(user.move_force < move_resist)
 			return
 		user.do_attack_animation(src, ATTACK_EFFECT_DISARM)
@@ -21,14 +21,14 @@
 		to_chat(src, span_userdanger("You're pushed by [user.name]!"))
 		return TRUE
 
-	if(!user.combat_mode)
+	if(user.a_intent == INTENT_HELP)
 		if (stat == DEAD)
 			return
 		visible_message(span_notice("[user] [response_help_continuous] [src]."), \
 						span_notice("[user] [response_help_continuous] you."), null, null, user)
 		to_chat(user, span_notice("You [response_help_simple] [src]."))
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
-	else
+	if(user.a_intent == INTENT_HARM)
 		if(HAS_TRAIT(user, TRAIT_PACIFISM))
 			to_chat(user, span_warning("You don't want to hurt [src]!"))
 			return
@@ -61,39 +61,12 @@
 			var/damage = rand(1, 3)
 			attack_threshold_check(damage)
 			return 1
-	if (!user.combat_mode)
+	if (user.a_intent == INTENT_HELP)
 		if (health > 0)
 			visible_message(span_notice("[user.name] [response_help_continuous] [src]."), \
 							span_notice("[user.name] [response_help_continuous] you."), null, COMBAT_MESSAGE_RANGE, user)
 			to_chat(user, span_notice("You [response_help_simple] [src]."))
 			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
-
-
-/mob/living/basic/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)
-	if(..()) //if harm or disarm intent.
-		if(LAZYACCESS(modifiers, RIGHT_CLICK))
-			playsound(loc, 'sound/weapons/pierce.ogg', 25, TRUE, -1)
-			visible_message(span_danger("[user] [response_disarm_continuous] [name]!"), \
-							span_userdanger("[user] [response_disarm_continuous] you!"), null, COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_danger("You [response_disarm_simple] [name]!"))
-			log_combat(user, src, "disarmed")
-		else
-			var/damage = rand(15, 30)
-			visible_message(span_danger("[user] slashes at [src]!"), \
-							span_userdanger("You're slashed at by [user]!"), null, COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_danger("You slash at [src]!"))
-			playsound(loc, 'sound/weapons/slice.ogg', 25, TRUE, -1)
-			attack_threshold_check(damage)
-			log_combat(user, src, "attacked")
-		return 1
-
-/mob/living/basic/attack_larva(mob/living/carbon/alien/larva/L)
-	. = ..()
-	if(. && stat != DEAD) //successful larva bite
-		var/damage = rand(5, 10)
-		. = attack_threshold_check(damage)
-		if(.)
-			L.amount_grown = min(L.amount_grown + damage, L.max_grown)
 
 /mob/living/basic/attack_basic_mob(mob/living/basic/user, list/modifiers)
 	. = ..()
@@ -115,7 +88,7 @@
 		return attack_threshold_check(damage)
 
 /mob/living/basic/attack_drone(mob/living/simple_animal/drone/M)
-	if(M.combat_mode) //No kicking dogs even as a rogue drone. Use a weapon.
+	if(M.a_intent == INTENT_HARM) //No kicking dogs even as a rogue drone. Use a weapon.
 		return
 	return ..()
 

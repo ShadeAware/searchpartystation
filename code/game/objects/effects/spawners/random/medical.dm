@@ -35,7 +35,6 @@
 		/obj/item/organ/heart/gland/electric = 3,
 		/obj/item/organ/regenerative_core = 2,
 		/obj/item/organ/heart/gland/ventcrawling = 1,
-		/obj/item/organ/body_egg/alien_embryo = 1,
 	)
 
 /obj/effect/spawner/random/medical/memeorgans
@@ -59,14 +58,6 @@
 		/obj/item/organ/liver/fly,
 		/obj/item/organ/tail/cat,
 		/obj/item/organ/tail/lizard,
-	)
-
-/obj/effect/spawner/random/medical/two_percent_xeno_egg_spawner
-	name = "2% chance xeno egg spawner"
-	icon_state = "xeno_egg"
-	loot = list(
-		/obj/effect/decal/remains/xeno = 49,
-		/obj/effect/spawner/xeno_egg_delivery = 1,
 	)
 
 /obj/effect/spawner/random/medical/surgery_tool

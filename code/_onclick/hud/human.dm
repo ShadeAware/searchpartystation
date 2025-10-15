@@ -81,11 +81,15 @@
 	using.icon = ui_style
 	static_inventory += using
 
-	action_intent = new /atom/movable/screen/combattoggle/flashy(null, src)
-	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
+	combat_button = new /atom/movable/screen/combattoggle/flashy(null, src)
+	combat_button.icon = ui_style
+	combat_button.screen_loc = ui_combat_toggle
+	static_inventory += combat_button
 
+	action_intent = new /atom/movable/screen/act_intent/segmented
+	action_intent.icon_state = mymob.a_intent
+	action_intent.hud = src
+	static_inventory += action_intent
 
 	using = new /atom/movable/screen/mov_intent(null, src)
 	using.icon = ui_style

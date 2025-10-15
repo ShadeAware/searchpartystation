@@ -19,6 +19,9 @@
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
+	if(!user.combat_mode)
+		return
+
 	weapon?.add_fingerprint(user)
 
 	var/direction = get_attack_direction(user, weapon, clicked_atom)

@@ -23,7 +23,7 @@
 		. += span_info("It is [lowertext(english_list(types))].")
 
 /obj/item/reagent_containers/cup/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return NONE
 
 	var/hotness = tool.get_temperature()
@@ -68,7 +68,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/cup/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return NONE
 
 	if(!ismob(interacting_with))

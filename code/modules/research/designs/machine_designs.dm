@@ -434,12 +434,12 @@
 	build_path = /obj/item/circuitboard/machine/cell_charger
 	mapload_design_flags = DESIGN_IMPRINTER
 
-/datum/design/board/dish_drive
+/*/datum/design/board/dish_drive
 	name = "Machine Board (Dish Drive)"
 	desc = "The circuit board for a dish drive."
 	id = "dish_drive"
 	build_path = /obj/item/circuitboard/machine/dish_drive
-	mapload_design_flags = DESIGN_IMPRINTER
+	mapload_design_flags = DESIGN_IMPRINTER*/
 
 /datum/design/board/stacking_unit_console
 	name = "Machine Board (Stacking Machine Console)"

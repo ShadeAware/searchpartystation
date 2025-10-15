@@ -8,7 +8,7 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 /obj/item/defibrillator
 	name = "defibrillator"
 	desc = "A device that delivers powerful shocks to detachable paddles that resuscitate incapacitated patients. \
-	Has a rear bracket for attachments to wall mounts and medical cyborgs."
+	Has a rear bracket for attachments to wall mounts and medical drones."
 	icon = 'icons/obj/defib.dmi'
 	icon_state = "defibunit"
 	inhand_icon_state = "defibunit"
@@ -464,7 +464,7 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 			to_chat(user, span_warning("[src] are recharging!"))
 		return ITEM_INTERACT_BLOCKING
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(user.a_intent == INTENT_DISARM)
 		do_disarm(interacting_with, user)
 		return ITEM_INTERACT_SUCCESS
 
@@ -480,7 +480,7 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 		to_chat(user, span_warning("You need to target your patient's chest with [src]."))
 		return ITEM_INTERACT_BLOCKING
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		do_harm(carbon_target, user)
 		return ITEM_INTERACT_SUCCESS
 

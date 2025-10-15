@@ -85,7 +85,7 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/living_pawn = pawn
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		DEBUG_AI_LOG(src, "Unfriended [user]")
 		living_pawn.unfriend(user)
 	else

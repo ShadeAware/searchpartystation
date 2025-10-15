@@ -59,7 +59,7 @@
 
 /obj/item/swab/proc/swab_human(mob/living/carbon/human/target, mob/living/user)
 	// Resisting
-	if(user != target && (target.combat_mode && target.body_position == STANDING_UP && !target.incapacitated()))
+	if(user != target && (target.a_intent == INTENT_HARM && target.body_position == STANDING_UP && !target.incapacitated()))
 		user.visible_message(span_warning("<b>[user]</b> tries to swab <b>[target]</b>, but they move away."))
 		return ITEM_INTERACT_BLOCKING
 
