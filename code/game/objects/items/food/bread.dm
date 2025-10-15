@@ -27,7 +27,7 @@
 
 /obj/item/food/bread/plain
 	name = "bread"
-	desc = "Plain old minervan bread."
+	desc = "Plain old Human bread."
 	icon_state = "bread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 10)
 	tastes = list("bread" = 10)
@@ -45,7 +45,7 @@
 
 /obj/item/food/breadslice/plain
 	name = "bread slice"
-	desc = "A slice of minervan bread."
+	desc = "A slice of Human bread."
 	icon_state = "breadslice"
 	foodtypes = GRAIN
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)

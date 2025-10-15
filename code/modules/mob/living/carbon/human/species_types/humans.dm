@@ -1,5 +1,5 @@
 /datum/species/human
-	name = "\improper Minervan"
+	name = "\improper Human"
 	id = SPECIES_HUMAN
 	default_color = "FFFFFF"
 	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, BODY_RESIZABLE, HAIRCOLOR, FACEHAIRCOLOR)
@@ -30,11 +30,11 @@
 	human.update_body_parts()
 
 /datum/species/human/get_species_mechanics()
-	return "Minervans possess no unique traits."
+	return "Humans possess no unique traits."
 
 /datum/species/human/get_species_lore()
 	return list(
-		"Minervans. Adaptable, numerous, resiliant, and viral.",
+		"Humans. Adaptable, numerous, resiliant, and viral.",
 	)
 
 /datum/species/human/get_agony_sound(mob/living/carbon/human)
