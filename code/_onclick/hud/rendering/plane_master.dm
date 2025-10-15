@@ -84,6 +84,12 @@
 	blend_mode_override = BLEND_MULTIPLY
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
+/atom/movable/screen/plane_master/game_world/backdrop(mob/mymob)
+	. = ..()
+	remove_filter("AO")
+	if(istype(mymob))
+		add_filter("AO", 1, drop_shadow_filter(x = 0, y = -2, size = 4, color = "#04080FAA"))
+
 
 /atom/movable/screen/plane_master/lighting/backdrop(mob/mymob)
 	. = ..()
@@ -172,6 +178,12 @@
 	plane = RUNECHAT_PLANE
 	blend_mode = BLEND_OVERLAY
 	render_relay_plane = RENDER_PLANE_NON_GAME
+
+/atom/movable/screen/plane_master/runechat/backdrop(mob/mymob)
+	. = ..()
+	remove_filter("AO")
+	if(istype(mymob))
+		add_filter("AO", 1, drop_shadow_filter(x = 0, y = -2, size = 4, color = "#04080FAA"))
 
 /atom/movable/screen/plane_master/gravpulse
 	name = "gravpulse plane"
