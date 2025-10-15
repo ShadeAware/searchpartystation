@@ -140,14 +140,14 @@
 /obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"
 	icon_state = "liver-c"
-	desc = "A very basic device designed to mimic the functions of a minervan liver. Handles toxins slightly worse than an organic liver."
+	desc = "A very basic device designed to mimic the functions of a Human liver. Handles toxins slightly worse than an organic liver."
 	organ_flags = ORGAN_SYNTHETIC
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/liver/cybernetic/tier2
 	name = "cybernetic liver"
 	icon_state = "liver-c-u"
-	desc = "An electronic device designed to mimic the functions of a minervan liver. Handles toxins slightly better than an organic liver."
+	desc = "An electronic device designed to mimic the functions of a Human liver. Handles toxins slightly better than an organic liver."
 	maxHealth = 100
 	emp_vulnerability = 40
 

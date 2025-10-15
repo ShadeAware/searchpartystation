@@ -80,7 +80,7 @@ TYPEINFO_DEF(/obj/item/clothing/under/aether_robes)
 	var/datum/roll_result/result = user.get_examine_result("aether_robe", trait_succeed = TRAIT_AETHERITE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)
-		. += result.create_tooltip("It is made out of the fibers of a Minervan domestic plant.", body_only = TRUE)
+		. += result.create_tooltip("It is made out of the fibers of a Human domestic plant.", body_only = TRUE)
 
 /obj/item/clothing/under/aether_robes/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
 	. = ..()
