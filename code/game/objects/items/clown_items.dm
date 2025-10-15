@@ -110,11 +110,7 @@
  * * user - The mob that is using the soap to clean.
  */
 /obj/item/soap/proc/decreaseUses(mob/user)
-	var/skillcheck = 1
-	if(user?.mind)
-		skillcheck = user.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER)
-	if(prob(skillcheck*100)) //higher level = more uses assuming RNG is nice
-		uses--
+	uses--
 	if(uses <= 0)
 		noUses(user)
 
@@ -135,8 +131,6 @@
 
 
 	var/clean_speedies = 1 * cleanspeed
-	if(user.mind)
-		clean_speedies = cleanspeed * min(user.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER)+0.1,1) //less scaling for soapies
 
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
@@ -147,8 +141,6 @@
 		user.visible_message(span_notice("[user] begins to scrub \the [interacting_with.name] out with [src]."), span_warning("You begin to scrub \the [interacting_with.name] out with [src]..."))
 		if(do_after(user, interacting_with, clean_speedies))
 			to_chat(user, span_notice("You scrub \the [interacting_with.name] out."))
-			var/obj/effect/decal/cleanable/cleanies = interacting_with
-			user.mind?.adjust_experience(/datum/skill/cleaning, max(round(cleanies.beauty/CLEAN_SKILL_BEAUTY_ADJUSTMENT),0)) //again, intentional that this does NOT round but mops do.
 			qdel(interacting_with)
 			decreaseUses(user)
 			return ITEM_INTERACT_SUCCESS
@@ -157,7 +149,6 @@
 		var/mob/living/carbon/human/human_target = interacting_with
 		user.visible_message(span_warning("\the [user] washes \the [interacting_with]'s mouth out with [src.name]!"), span_notice("You wash \the [interacting_with]'s mouth out with [src.name]!")) //washes mouth out with soap sounds better than 'the soap' here if(user.zone_selected == "mouth")
 		if(human_target.lip_style)
-			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
 			human_target.update_lips(null)
 		decreaseUses(user)
 		return ITEM_INTERACT_SUCCESS
@@ -174,19 +165,14 @@
 					our_window.remove_viscontents(iter_blood)
 					qdel(iter_blood)
 					our_window.bloodied = FALSE
-			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
 			decreaseUses(user)
 			return ITEM_INTERACT_SUCCESS
 	else
 		user.visible_message(span_notice("[user] begins to clean \the [interacting_with.name] with [src]..."), span_notice("You begin to clean \the [interacting_with.name] with [src]..."))
 		if(do_after(user, interacting_with, clean_speedies))
 			to_chat(user, span_notice("You clean \the [interacting_with.name]."))
-			if(user && isturf(interacting_with))
-				for(var/obj/effect/decal/cleanable/cleanable_decal in interacting_with)
-					user.mind?.adjust_experience(/datum/skill/cleaning, round(cleanable_decal.beauty / CLEAN_SKILL_BEAUTY_ADJUSTMENT))
 			interacting_with.wash(CLEAN_SCRUB)
 			interacting_with.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
 			decreaseUses(user)
 			return ITEM_INTERACT_SUCCESS
 

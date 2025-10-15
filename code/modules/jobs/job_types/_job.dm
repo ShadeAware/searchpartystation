@@ -226,21 +226,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!ishuman(spawned))
 		return
 
-	var/list/roundstart_experience
-
-	if(!config) //Needed for robots.
-		roundstart_experience = minimal_skills
-
-	if(CONFIG_GET(flag/jobs_have_minimal_access))
-		roundstart_experience = minimal_skills
-	else
-		roundstart_experience = skills
-
-	if(roundstart_experience)
-		var/mob/living/carbon/human/experiencer = spawned
-		for(var/i in roundstart_experience)
-			experiencer.mind.adjust_experience(i, roundstart_experience[i], TRUE)
-
 	if(pinpad_key)
 		var/pin = SSid_access.get_static_pincode(pinpad_key)
 		spawned.mind.set_note(NOTES_DOOR_CODES, "The pin to your doors is [pin]")
@@ -354,11 +339,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// Handles jumpskirt pref
 	if(allow_jumpskirt && H.jumpsuit_style == PREF_SKIRT)
 		uniform = text2path("[uniform]/skirt") || uniform
-
-	var/client/client = GLOB.directory[ckey(H.mind?.key)]
-
-	if(client?.is_veteran() && client?.prefs.read_preference(/datum/preference/toggle/playtime_reward_cloak))
-		neck = /obj/item/clothing/neck/cloak/skill_reward/playing
 
 /datum/outfit/job/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)

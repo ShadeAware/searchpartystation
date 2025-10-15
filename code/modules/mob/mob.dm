@@ -1711,12 +1711,6 @@
 			mind_reference.set_note(NOTES_CUSTOM, params["newnote"])
 			return TRUE
 
-/mob/verb/view_skills()
-	set category = "IC"
-	set name = "View Skills"
-
-	mind?.print_levels(src)
-
 /// Makes a client temporarily aware of an appearance via and invisible vis contents object.
 /mob/proc/send_appearance(mutable_appearance/appearance)
 	RETURN_TYPE(/atom/movable/screen)
