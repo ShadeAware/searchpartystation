@@ -16,6 +16,7 @@
 	usable_legs = 0 //Populated on init through list/bodyparts
 	num_hands = 0 //Populated on init through list/bodyparts
 	usable_hands = 0 //Populated on init through list/bodyparts
+	possible_a_intents = list(INTENT_HELP, INTENT_HARM)
 
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
 	rotate_on_lying = TRUE

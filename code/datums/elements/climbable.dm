@@ -115,7 +115,7 @@
 	SIGNAL_HANDLER
 	if(user == dropped_atom && isliving(dropped_atom))
 		var/mob/living/living_target = dropped_atom
-		if(living_target.combat_mode)
+		if(living_target.a_intent == INTENT_HARM)
 			return
 		if(isanimal(living_target))
 			var/mob/living/simple_animal/animal = dropped_atom

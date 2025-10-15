@@ -131,7 +131,7 @@
 		if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
 			try_contact_contract_pathogen(D)
 
-	if(!user.combat_mode)
+	if(user.a_intent == INTENT_HELP)
 		help_shake_act(user)
 		return FALSE
 

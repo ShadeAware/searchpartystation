@@ -1,6 +1,6 @@
 /obj/item/melee/baton
 	name = "police baton"
-	desc = "A wooden truncheon for beating criminal scum. Left click to stun, right click to harm."
+	desc = "A wooden truncheon for beating criminals into submission."
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "classic_baton"
 	inhand_icon_state = "classic_baton"
@@ -61,9 +61,6 @@
 
 /obj/item/melee/baton/Initialize(mapload)
 	. = ..()
-	// Adding an extra break for the sake of presentation
-	if(charged_stamina_damage != 0)
-		offensive_notes = "\nVarious interviewed security forces report being able to beat criminals into exhaustion with only [span_warning("[CEILING(100 / charged_stamina_damage, 1)] hit\s!")]"
 
 	if(can_be_flipped)
 		AddElement(/datum/element/update_icon_updates_onmob)
@@ -111,13 +108,13 @@
 	. = ..()
 	if(!(slot & ITEM_SLOT_HANDS))
 		return
-	RegisterSignal(user, COMSIG_LIVING_TOGGLE_COMBAT_MODE, PROC_REF(user_flip))
+	RegisterSignal(user, COMSIG_LIVING_TOGGLE_HARM_INTENT, PROC_REF(user_flip))
 	var/mob/living/L = user
-	user_flip(L, L.combat_mode)
+	user_flip(L, L.a_intent == INTENT_HARM)
 
 /obj/item/melee/baton/unequipped(mob/user, silent)
 	. = ..()
-	UnregisterSignal(user, COMSIG_LIVING_TOGGLE_COMBAT_MODE)
+	UnregisterSignal(user, COMSIG_LIVING_TOGGLE_HARM_INTENT)
 	user_flip(null, FALSE)
 
 /obj/item/melee/baton/proc/user_flip(mob/living/user, new_mode)
@@ -154,13 +151,13 @@
 	else
 		if (active)
 
-			if (user.combat_mode)
+			if (user.a_intent == INTENT_HARM)
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_active_combat_mode
 			else
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_active
 		else
 
-			if (user.combat_mode)
+			if (user.a_intent == INTENT_HARM)
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_inactive_combat_mode
 			else
 				context[SCREENTIP_CONTEXT_LMB] = context_living_target_inactive
@@ -379,7 +376,7 @@ TYPEINFO_DEF(/obj/item/melee/baton/security)
 
 /obj/item/melee/baton/security
 	name = "stun baton"
-	desc = "A stun baton for incapacitating people with. Left click to stun, right click to harm."
+	desc = "An electrical stun baton for incapacitating assailants, designed to deliver low-intensity shocks."
 
 	icon_state = "stunbaton"
 	inhand_icon_state = "baton"

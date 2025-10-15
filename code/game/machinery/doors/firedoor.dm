@@ -96,7 +96,7 @@ TYPEINFO_DEF(/obj/machinery/door/firedoor)
 			if(isalienadult(living_user) || issilicon(living_user))
 				context[SCREENTIP_CONTEXT_LMB] = "Open"
 				return CONTEXTUAL_SCREENTIP_SET
-			if(!living_user.combat_mode)
+			if(!living_user.a_intent == INTENT_HARM)
 				if(ishuman(living_user))
 					context[SCREENTIP_CONTEXT_LMB] = "Knock"
 					return CONTEXTUAL_SCREENTIP_SET
@@ -203,10 +203,10 @@ TYPEINFO_DEF(/obj/machinery/door/firedoor)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 
-	if(!user.combat_mode || modifiers[RIGHT_CLICK])
+	if(user.a_intent == INTENT_DISARM)
 		knock_on(user)
 		return TRUE
-	else
+	else if (user.a_intent == INTENT_HARM)
 		user.visible_message(span_warning("[user] bashes [src]!"), \
 			span_warning("You bash [src]!"))
 		playsound(src, bash_sound, 100, TRUE)

@@ -941,7 +941,7 @@
 	C.leave_evidence(user, src)
 
 	var/mob/living/L = user
-	if(L.combat_mode)
+	if(L.a_intent == INTENT_HARM)
 		return ..()
 
 	if(is_wire_tool(C) && panel_open)
@@ -1020,7 +1020,7 @@
 			to_chat(user, span_warning("[src] is blocked by a seal!"))
 			return
 
-		if(atom_integrity < max_integrity)
+		if((atom_integrity < max_integrity) && user.a_intent == INTENT_HELP)
 			if(!W.tool_start_check(user, amount=0))
 				return
 			user.visible_message(span_notice("[user] begins welding the airlock."), \
@@ -1032,22 +1032,19 @@
 				user.visible_message(span_notice("[user] finishes welding [src]."), \
 									span_notice("You finish repairing the airlock."))
 				update_appearance()
-		else
-			to_chat(user, span_notice("The airlock doesn't need repairing."))
-
-/obj/machinery/door/airlock/try_to_weld_secondary(obj/item/weldingtool/tool, mob/user)
-	if(!tool.tool_start_check(user, amount=0))
-		return
-	user.visible_message(span_notice("[user] begins [welded ? "unwelding":"welding"] the airlock."), \
-		span_notice("You begin [welded ? "unwelding":"welding"] the airlock..."), \
-		span_hear("You hear metal a welding torch splitting metal."))
-	if(!tool.use_tool(src, user, 40, volume=50, extra_checks = CALLBACK(src, PROC_REF(weld_checks), tool, user)))
-		return
-	welded = !welded
-	user.visible_message(span_notice("[user] [welded? "welds shut":"unwelds"] [src]."), \
-		span_notice("You [welded ? "weld the airlock shut":"unweld the airlock"]."))
-	log_game("[key_name(user)] [welded ? "welded":"unwelded"] airlock [src] with [tool] at [AREACOORD(src)]")
-	update_appearance()
+	if(user.a_intent != INTENT_HELP)
+		if(!W.tool_start_check(user, amount=0))
+			return
+		user.visible_message(span_notice("[user] begins [welded ? "unwelding":"welding"] the airlock."), \
+			span_notice("You begin [welded ? "unwelding":"welding"] the airlock..."), \
+			span_hear("You hear metal a welding torch splitting metal."))
+		if(!W.use_tool(src, user, 40, volume=50, extra_checks = CALLBACK(src, PROC_REF(weld_checks), W, user)))
+			return
+		welded = !welded
+		user.visible_message(span_notice("[user] [welded? "welds shut":"unwelds"] [src]."), \
+			span_notice("You [welded ? "weld the airlock shut":"unweld the airlock"]."))
+		log_game("[key_name(user)] [welded ? "welded":"unwelded"] airlock [src] with [W] at [AREACOORD(src)]")
+		update_appearance()
 
 /obj/machinery/door/airlock/proc/weld_checks(obj/item/weldingtool/W, mob/user)
 	return !operating && density
@@ -1329,31 +1326,6 @@
 		locked = TRUE
 		loseMainPower()
 		loseBackupPower()
-
-/obj/machinery/door/airlock/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)
-	if(isElectrified() && shock(user, 100)) //Mmm, fried xeno!
-		add_fingerprint(user)
-		return
-	if(!density) //Already open
-		return ..()
-	if(locked || welded || seal) //Extremely generic, as aliens only understand the basics of how airlocks work.
-		if(user.combat_mode)
-			return ..()
-		to_chat(user, span_warning("[src] refuses to budge!"))
-		return
-	add_fingerprint(user)
-	user.visible_message(span_warning("[user] begins prying open [src]."),\
-						span_noticealien("You begin digging your claws into [src] with all your might!"),\
-						span_warning("You hear groaning metal..."))
-	var/time_to_open = 5 //half a second
-	if(hasPower())
-		time_to_open = 5 SECONDS //Powered airlocks take longer to open, and are loud.
-		playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE)
-
-
-	if(do_after(user, src, time_to_open))
-		if(density && !open(2)) //The airlock is still closed, but something prevented it opening. (Another player noticed and bolted/welded the airlock in time!)
-			to_chat(user, span_warning("Despite your efforts, [src] managed to resist your attempts to open it!"))
 
 /obj/machinery/door/airlock/hostile_lockdown(mob/origin)
 	// Must be powered and have working AI wire.

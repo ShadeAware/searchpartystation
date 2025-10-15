@@ -93,7 +93,7 @@ TYPEINFO_DEF(/obj/structure/closet)
 	take_contents()
 
 /obj/structure/closet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	if(!isliving(user) || astype(user, /mob/living).combat_mode || broken)
+	if(!isliving(user) || astype(user, /mob/living).a_intent == INTENT_HARM || broken)
 		return NONE
 
 	if(held_item)

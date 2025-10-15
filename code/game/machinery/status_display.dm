@@ -56,7 +56,7 @@ TYPEINFO_DEF(/obj/item/wallframe/status_display)
 		return TRUE
 
 /obj/machinery/status_display/welder_act(mob/living/user, obj/item/tool)
-	if(user.combat_mode)
+	if(user.a_intent != INTENT_HELP)
 		return
 	if(atom_integrity >= max_integrity)
 		balloon_alert(user, "it doesn't need repairs!")

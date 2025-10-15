@@ -514,7 +514,7 @@ TYPEINFO_DEF(/obj/structure/industrial_lift)
 	return TRUE
 
 /obj/structure/industrial_lift/proc/use(mob/living/user)
-	if(!isliving(user) || !in_range(src, user) || user.combat_mode)
+	if(!isliving(user) || !in_range(src, user) || user.a_intent == INTENT_HARM)
 		return
 
 	var/list/tool_list = list()
@@ -531,7 +531,7 @@ TYPEINFO_DEF(/obj/structure/industrial_lift)
 		add_fingerprint(user)
 		return
 	var/result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, PROC_REF(check_menu), user, src.loc), require_near = TRUE, tooltips = TRUE)
-	if(!isliving(user) || !in_range(src, user) || user.combat_mode)
+	if(!isliving(user) || !in_range(src, user) || user.a_intent == INTENT_HARM)
 		return //nice try
 	switch(result)
 		if("Up")

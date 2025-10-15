@@ -121,7 +121,7 @@
 	return FALSE
 
 /datum/grab/normal/resolve_openhand_attack(obj/item/hand_item/grab/G)
-	if(!G.assailant.combat_mode || G.assailant == G.affecting)
+	if(!G.assailant.a_intent == INTENT_HARM || G.assailant == G.affecting)
 		return FALSE
 	if(G.target_zone == BODY_ZONE_HEAD)
 		if(G.assailant.zone_selected == BODY_ZONE_PRECISE_EYES)
@@ -254,7 +254,7 @@
 	var/mob/living/carbon/affecting = G.get_affecting_mob()
 	if(!istype(affecting))
 		return
-	if(!user.combat_mode)
+	if(!user.a_intent == INTENT_HARM)
 		return FALSE // Not trying to hurt them.
 
 	if(!(W.sharpness & SHARP_EDGED) || !W.force || W.damtype != BRUTE)
@@ -301,7 +301,7 @@
 	var/mob/living/affecting = G.get_affecting_mob()
 	if(!affecting)
 		return
-	if(!user.combat_mode)
+	if(!user.a_intent == INTENT_HARM)
 		return FALSE // Not trying to hurt them.
 
 	if(!(W.sharpness & SHARP_EDGED) || !W.force || W.damtype != BRUTE)

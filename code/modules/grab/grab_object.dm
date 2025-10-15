@@ -86,7 +86,7 @@
 	var/mob/living/L = get_affecting_mob()
 	if(L)
 		log_combat(assailant, L, "grabbed")
-		if(L != assailant && assailant.combat_mode)
+		if(L != assailant && assailant.a_intent == INTENT_HARM)
 			upgrade(TRUE)
 
 	/// Update appearance
@@ -164,7 +164,7 @@
 	if (!assailant)
 		return
 
-	if(assailant.combat_mode)
+	if(assailant.a_intent == INTENT_HARM)
 		upgrade()
 	else
 		downgrade()
@@ -258,7 +258,7 @@
 	if(!ishuman(attacker))
 		return
 	var/mob/living/carbon/human/human_attacker = attacker
-	if(human_attacker.combat_mode)
+	if(human_attacker.a_intent == INTENT_HARM)
 		return
 
 	if(current_grab.resolve_item_attack(src, attacker, I, human_attacker.zone_selected))

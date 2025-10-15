@@ -50,7 +50,7 @@
 	return TOXLOSS
 
 /obj/item/reagent_containers/cup/soda_cans/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(ishuman(interacting_with) && !reagents.total_volume && user.combat_mode && user.zone_selected == BODY_ZONE_HEAD)
+	if(ishuman(interacting_with) && !reagents.total_volume && user.a_intent == INTENT_HARM && user.zone_selected == BODY_ZONE_HEAD)
 		if(interacting_with == user)
 			user.visible_message(
 				span_warning("[user] crushes the can of [src] on [user.p_their()] forehead."),

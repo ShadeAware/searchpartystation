@@ -123,7 +123,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/cold_discomfort_strings = list(
 		"You feel chilly.",
 		"You shiver suddenly.",
-		"Your chilly flesh stands out in goosebumps."
+		"Your cold flesh stands out in goosebumps."
 	)
 
 	//* MODIFIERS *//
@@ -1121,7 +1121,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return
 	if(M.mind)
 		attacker_style = M.mind.martial_art
-	if((M != H) && M.combat_mode && H.check_block(M, 0, M.name, attack_type = UNARMED_ATTACK))
+	if((M != H) && M.a_intent != INTENT_HELP && H.check_block(M, 0, M.name, attack_type = UNARMED_ATTACK))
 		log_combat(M, H, "attempted to touch")
 		H.visible_message(span_warning("[M] attempts to touch [H]!"), \
 						span_danger("[M] attempts to touch you!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, M)
@@ -1129,23 +1129,25 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return
 
 	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H, attacker_style)
-
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
-		. = disarm(M, H, attacker_style)
-		if(.)
-			M.animate_interact(H, INTERACT_DISARM)
-		return // dont attack after
-
-	if(M.combat_mode)
-		. = harm(M, H, attacker_style)
-		if(. & ATTACK_CONTINUE)
-			M.animate_interact(H, INTERACT_HARM)
-		if(. & ATTACK_CONSUME_STAMINA)
-			M.stamina_swing(STAMINA_SWING_COST_UNARMED)
-	else
-		. = help(M, H, attacker_style)
-		if(.)
-			M.animate_interact(H, INTERACT_HELP)
+	switch(M.a_intent)
+		if("help")
+			. = help(M, H, attacker_style)
+			if(.)
+				M.animate_interact(H, INTERACT_HELP)
+		if("grab")
+			. = help(M, H, attacker_style)
+			if(.)
+				M.animate_interact(H, INTERACT_GRAB)
+		if("harm")
+			. = harm(M, H, attacker_style)
+			if(. & ATTACK_CONTINUE)
+				M.animate_interact(H, INTERACT_HARM)
+			if(. & ATTACK_CONSUME_STAMINA)
+				M.stamina_swing(STAMINA_SWING_COST_UNARMED)
+		if("disarm")
+			. = disarm(M, H, attacker_style)
+			if(.)
+				M.animate_interact(H, INTERACT_DISARM)
 
 /datum/species/proc/on_hit(obj/projectile/P, mob/living/carbon/human/H)
 	// called when hit by a projectile

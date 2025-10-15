@@ -133,7 +133,7 @@ TYPEINFO_DEF(/obj/structure/displaycase)
 			toggle_lock(user)
 		else
 			to_chat(user, span_alert("Access denied."))
-	else if(W.tool_behaviour == TOOL_WELDER && !user.combat_mode && !broken)
+	else if(W.tool_behaviour == TOOL_WELDER && user.a_intent == INTENT_HELP && !broken)
 		if(atom_integrity < max_integrity)
 			if(!W.tool_start_check(user, amount=5))
 				return
@@ -205,7 +205,7 @@ TYPEINFO_DEF(/obj/structure/displaycase)
 	    //prevents remote "kicks" with TK
 		if (!Adjacent(user))
 			return
-		if (!user.combat_mode)
+		if (user.a_intent == INTENT_HELP)
 			if(!user.is_blind())
 				user.examinate(src)
 			return
@@ -280,12 +280,6 @@ TYPEINFO_DEF(/obj/structure/displaycase)
 	start_showpiece_type = /obj/item/gun/energy/laser/captain
 	req_access = list(ACCESS_CENT_SPECOPS) //this was intentional, presumably to make it slightly harder for caps to grab their gun roundstart
 
-/obj/structure/displaycase/labcage
-	name = "lab cage"
-	desc = "A glass lab container for storing interesting creatures."
-	start_showpiece_type = /obj/item/clothing/mask/facehugger/lamarr
-	req_access = list(ACCESS_RD)
-
 /obj/structure/displaycase/noalert
 	alert = FALSE
 
@@ -310,7 +304,7 @@ TYPEINFO_DEF(/obj/structure/displaycase)
 
 	if(!user.Adjacent(src)) //no TK museology
 		return
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(W.tool_behaviour == TOOL_WELDER && !broken)
 		return ..()
@@ -553,7 +547,7 @@ TYPEINFO_DEF(/obj/structure/displaycase)
 
 /obj/structure/displaycase/forsale/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(open && !user.combat_mode)
+	if(open && !user.a_intent == INTENT_HARM)
 		if(anchored)
 			to_chat(user, span_notice("You start unsecuring [src]..."))
 		else
@@ -567,7 +561,7 @@ TYPEINFO_DEF(/obj/structure/displaycase)
 				to_chat(user, span_notice("You secure [src]."))
 			set_anchored(!anchored)
 			return TRUE
-	else if(!open && !user.combat_mode)
+	else if(!open && !user.a_intent == INTENT_HARM)
 		to_chat(user, span_notice("[src] must be open to move it."))
 		return
 

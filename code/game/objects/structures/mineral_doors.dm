@@ -20,6 +20,9 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 	material_flags = MATERIAL_EFFECTS
 	material_modifier = 0.25
 
+	var/locked = FALSE //TODO: KEYS
+	var/key_id = ""
+
 	var/door_opened = FALSE //if it's open or not.
 	var/isSwitchingStates = FALSE //don't try to change stats if we're already opening
 
@@ -29,6 +32,12 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 
 	var/sheetType = /obj/item/stack/sheet/iron //what we're made of
 	var/sheetAmount = 10 //how much it takes to construct us.
+
+	///Sound to play when knocked on
+	var/knock_sound = 'sound/machines/wooden_closet_close.ogg'
+
+	///Sound to play when slammed on
+	var/slam_sound = 'sound/effects/wooden_doorslam.ogg'
 
 /obj/structure/mineral_door/Initialize(mapload)
 	. = ..()
@@ -40,6 +49,17 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 /obj/structure/mineral_door/Move()
 	. = ..()
 	zas_update_loc()
+
+/obj/structure/mineral_door/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+
+	if(isaicamera(user) || issilicon(user))
+		return .
+
+	if (isnull(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Open"
+		context[SCREENTIP_CONTEXT_RMB] = "Knock"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/mineral_door/BumpedBy(atom/movable/AM)
 	..()
@@ -60,6 +80,13 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 	. = ..()
 	if(.)
 		return
+	if(LAZYACCESS(modifiers, RIGHT_CLICK) || user.a_intent == INTENT_DISARM)
+		knock_on(user)
+		return TRUE
+
+	if(user.a_intent == INTENT_HARM)
+		slam_on(user)
+
 	return TryToSwitchState(user)
 
 /obj/structure/mineral_door/CanAllowThrough(atom/movable/mover, border_dir)
@@ -69,6 +96,10 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 
 /obj/structure/mineral_door/proc/TryToSwitchState(atom/user)
 	if(isSwitchingStates || !anchored)
+		return
+	if(locked)
+		user.visible_message(span_warning("[user] rattles the doorknob on [src]!"), span_notice("You rattle the doorknob on [src]. Its locked!"))
+		playsound(src, 'sound/machines/door_locked.ogg', 100, TRUE)
 		return
 	if(isliving(user))
 		var/mob/living/M = user
@@ -124,6 +155,21 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 	update_appearance()
 	isSwitchingStates = FALSE
 
+/obj/structure/mineral_door/proc/knock_on(mob/user)
+	user?.changeNext_move(CLICK_CD_MELEE)
+	user.visible_message(span_notice("[user] knocks on [src]."), span_notice("You knock on [src]."))
+	playsound(src, knock_sound, 100, TRUE)
+	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
+
+/obj/structure/mineral_door/proc/slam_on(mob/user)
+	user?.changeNext_move(CLICK_CD_MELEE)
+	user.visible_message(span_notice("[user] slams on the [src]!"), span_notice("You slam on the [src]!"))
+	playsound(src, slam_sound, 100, TRUE)
+	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
+
+
 /obj/structure/mineral_door/update_icon_state()
 	icon_state = "[initial(icon_state)][door_opened ? "open":""]"
 	return ..()
@@ -131,7 +177,7 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 /obj/structure/mineral_door/attackby(obj/item/I, mob/living/user)
 	if(pickaxe_door(user, I))
 		return
-	else if(!user.combat_mode)
+	else if(!user.a_intent == INTENT_HARM)
 		return attack_hand(user)
 	else
 		return ..()
@@ -313,7 +359,7 @@ TYPEINFO_DEF(/obj/structure/mineral_door)
 		fire_act(I.get_temperature())
 		return
 
-	if((!user.combat_mode) && istype(I, /obj/item/paper) && (atom_integrity < max_integrity))
+	if((!user.a_intent == INTENT_HARM) && istype(I, /obj/item/paper) && (atom_integrity < max_integrity))
 		user.visible_message(span_notice("[user] starts to patch the holes in [src]."), span_notice("You start patching some of the holes in [src]!"))
 		if(do_after(user, src, 2 SECONDS))
 			atom_integrity = min(atom_integrity+4,max_integrity)

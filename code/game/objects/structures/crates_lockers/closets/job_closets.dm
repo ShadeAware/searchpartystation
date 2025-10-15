@@ -18,7 +18,7 @@
 		/obj/item/reagent_containers/cup/rag = 2,
 		/obj/item/storage/box/beanbag = 1,
 		/obj/item/clothing/suit/armor/vest/ballistic = 1,
-		/obj/item/circuitboard/machine/dish_drive = 1,
+		//obj/item/circuitboard/machine/dish_drive = 1,
 		/obj/item/clothing/glasses/sunglasses/reagent = 1,
 		/obj/item/clothing/neck/petcollar = 1,
 		/obj/item/storage/belt/bandolier = 1)
@@ -38,7 +38,7 @@
 		/obj/item/clothing/suit/apron/chef = 3,
 		/obj/item/clothing/head/soft/mime = 2,
 		/obj/item/storage/box/mousetraps = 2,
-		/obj/item/circuitboard/machine/dish_drive = 1,
+		//obj/item/circuitboard/machine/dish_drive = 1,
 		/obj/item/clothing/suit/toggle/chef = 1,
 		/obj/item/clothing/under/rank/civilian/chef = 1,
 		/obj/item/clothing/head/chefhat = 1,

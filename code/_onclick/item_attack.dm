@@ -82,7 +82,7 @@
 
 /// Attempt to perform a special attack.
 /obj/item/proc/try_special_attack(mob/living/user, atom/target, modifiers, datum/special_attack/forced_attack)
-	if(!user.combat_mode)
+	if(!user.a_intent == INTENT_HARM)
 		return FALSE
 
 	var/datum/special_attack/spec_attack = forced_attack || get_special_attack()
@@ -237,7 +237,7 @@
 	if(item_flags & NOBLUDGEON)
 		return
 
-	if(!user.combat_mode)
+	if(user.a_intent == INTENT_HELP)
 		return
 
 	if(!used_special)
@@ -255,7 +255,7 @@
 	if(!missed)
 		M.do_hurt_animation()
 
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
+	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [user.combat_mode ? "YES" : "NO"]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
 	add_fingerprint(user)
 
 	if(!missed)

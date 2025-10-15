@@ -14,7 +14,7 @@
 		deploy_bodybag(user, get_turf(src))
 
 /obj/item/bodybag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return
 	var/atom/target = interacting_with // Yes i am supremely lazy
 

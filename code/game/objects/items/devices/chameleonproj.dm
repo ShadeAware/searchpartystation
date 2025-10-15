@@ -37,7 +37,7 @@
 
 /obj/item/chameleon/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	. = NONE
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return
 	if(!check_sprite(interacting_with))
 		return

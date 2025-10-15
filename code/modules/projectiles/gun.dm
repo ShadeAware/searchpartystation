@@ -248,7 +248,7 @@ TYPEINFO_DEF(/obj/item/gun)
 
 /obj/item/gun/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(get_dist(user, interacting_with) <= 1)
-		if(user.combat_mode)
+		if(user.a_intent == INTENT_HARM)
 			if(!modifiers?[RIGHT_CLICK])
 				return ITEM_INTERACT_ATTACK
 
@@ -289,7 +289,7 @@ TYPEINFO_DEF(/obj/item/gun)
 	return
 
 /obj/item/gun/attack(mob/M, mob/living/user)
-	if(user.combat_mode) //Flogging
+	if(user.a_intent == INTENT_HARM) //Flogging
 		if(bayonet)
 			M.attackby(bayonet, user)
 			return
@@ -298,14 +298,14 @@ TYPEINFO_DEF(/obj/item/gun)
 	return
 
 /obj/item/gun/attack_obj(obj/O, mob/living/user, params)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		if(bayonet)
 			O.attackby(bayonet, user)
 			return
 	return ..()
 
 /obj/item/gun/attackby(obj/item/I, mob/living/user, params)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return ..()
 
 	else if(istype(I, /obj/item/knife))

@@ -161,22 +161,30 @@ have ways of interacting with a specific mob and control it.
 
 /datum/ai_controller/monkey/proc/on_attack_hand(datum/source, mob/living/user, list/modifiers)
 	SIGNAL_HANDLER
-	if((user.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK)) && prob(MONKEY_RETALIATE_PROB))
+	if(user.a_intent == INTENT_HARM && prob(MONKEY_RETALIATE_HARM_PROB))
+		retaliate(user)
+	else if(user.a_intent == INTENT_DISARM && prob(MONKEY_RETALIATE_DISARM_PROB))
 		retaliate(user)
 
 /datum/ai_controller/monkey/proc/on_attack_paw(datum/source, mob/living/user, list/modifiers)
 	SIGNAL_HANDLER
-	if((user.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK)) && prob(MONKEY_RETALIATE_PROB))
+	if(user.a_intent == INTENT_HARM && prob(MONKEY_RETALIATE_HARM_PROB))
+		retaliate(user)
+	else if(user.a_intent == INTENT_DISARM && prob(MONKEY_RETALIATE_DISARM_PROB))
 		retaliate(user)
 
 /datum/ai_controller/monkey/proc/on_attack_animal(datum/source, mob/living/user)
 	SIGNAL_HANDLER
-	if(user.melee_damage_upper > 0 && prob(MONKEY_RETALIATE_PROB))
+	if(user.a_intent == INTENT_HARM && prob(MONKEY_RETALIATE_HARM_PROB))
+		retaliate(user)
+	else if(user.a_intent == INTENT_DISARM && prob(MONKEY_RETALIATE_DISARM_PROB))
 		retaliate(user)
 
 /datum/ai_controller/monkey/proc/on_attack_alien(datum/source, mob/living/user, list/modifiers)
 	SIGNAL_HANDLER
-	if((user.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK)) && prob(MONKEY_RETALIATE_PROB))
+	if(user.a_intent == INTENT_HARM && prob(MONKEY_RETALIATE_HARM_PROB))
+		retaliate(user)
+	else if(user.a_intent == INTENT_DISARM && prob(MONKEY_RETALIATE_DISARM_PROB))
 		retaliate(user)
 
 /datum/ai_controller/monkey/proc/on_bullet_act(datum/source, obj/projectile/Proj)

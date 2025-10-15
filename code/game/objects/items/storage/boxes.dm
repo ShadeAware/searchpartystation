@@ -1091,7 +1091,7 @@
 	var/static/items_inside = list(
 		/obj/item/stack/sheet/iron/five = 1,
 		/obj/item/stack/cable_coil/five = 1,
-		/obj/item/circuitboard/machine/dish_drive = 1,
+		//obj/item/circuitboard/machine/dish_drive = 1,
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/stock_parts/manipulator = 1,
 		/obj/item/stock_parts/matter_bin = 2,

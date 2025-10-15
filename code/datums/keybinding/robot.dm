@@ -63,3 +63,11 @@
 	var/mob/living/silicon/robot/R = user.mob
 	R.uneq_active()
 	return TRUE
+
+/datum/keybinding/robot/intent_cycle/down(client/user)
+	. = ..()
+	if(.)
+		return
+	var/mob/living/silicon/robot/R = user.mob
+	R.a_intent_change(INTENT_HOTKEY_LEFT)
+	return TRUE

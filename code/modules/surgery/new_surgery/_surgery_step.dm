@@ -266,7 +266,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if(QDELETED(target) || QDELETED(user))
 		return FALSE
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return FALSE
 
 	if(user.get_active_held_item() != src)

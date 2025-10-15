@@ -2113,6 +2113,10 @@ TYPEINFO_DEF(/atom)
 	if (isnull(user))
 		return
 
+	// Face directions on combat mode. No procs, no typechecks, just a var for speed
+	if(user.face_mouse)
+		user.face_atom(src)
+
 	if(is_mouseover_interactable)
 		user.update_mouse_pointer()
 

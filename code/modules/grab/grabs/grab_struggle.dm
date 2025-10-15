@@ -23,7 +23,7 @@
 		G.upgrade(TRUE)
 		return FALSE
 
-	if(!affecting.can_resist() || !affecting.combat_mode)
+	if(!affecting.can_resist() || !affecting.a_intent == INTENT_HARM || !affecting.combat_mode)
 		if(affecting.stat == CONSCIOUS)
 			affecting.visible_message(
 				span_danger("\The <b>[affecting]</b> isn't prepared to fight back as <b>[assailant]</b> tightens [assailant.p_their()] grip."),

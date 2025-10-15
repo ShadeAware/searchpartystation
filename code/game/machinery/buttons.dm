@@ -106,7 +106,7 @@ TYPEINFO_DEF(/obj/machinery/button)
 		update_appearance()
 		return
 
-	if(!user.combat_mode && !(W.item_flags & NOBLUDGEON))
+	if(!user.a_intent == INTENT_HARM && !(W.item_flags & NOBLUDGEON))
 		return attack_hand(user)
 	else
 		return ..()

@@ -928,7 +928,7 @@
 	req_components = list(/obj/item/stock_parts/micro_laser = 1)
 	needs_anchored = FALSE
 
-/obj/item/circuitboard/machine/dish_drive
+/*/obj/item/circuitboard/machine/dish_drive
 	name = "Dish Drive (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SERVICE
 	build_path = /obj/machinery/dish_drive
@@ -938,9 +938,9 @@
 		/obj/item/stock_parts/matter_bin = 2)
 	var/suction = TRUE
 	var/transmit = TRUE
-	needs_anchored = FALSE
+	needs_anchored = FALSE*/
 
-/obj/item/circuitboard/machine/dish_drive/examine(mob/user)
+/*/obj/item/circuitboard/machine/dish_drive/examine(mob/user)
 	. = ..()
 	. += span_notice("Its suction function is [suction ? "enabled" : "disabled"]. Use it in-hand to switch.")
 	. += span_notice("Its disposal auto-transmit function is [transmit ? "enabled" : "disabled"]. Alt-click it to switch.")
@@ -953,7 +953,7 @@
 	if(!user.Adjacent(src))
 		return
 	transmit = !transmit
-	to_chat(user, span_notice("You [transmit ? "enable" : "disable"] the board's automatic disposal transmission."))
+	to_chat(user, span_notice("You [transmit ? "enable" : "disable"] the board's automatic disposal transmission."))*/
 
 /obj/item/circuitboard/machine/gibber
 	name = "Gibber (Machine Board)"

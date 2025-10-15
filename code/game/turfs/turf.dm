@@ -741,7 +741,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/try_graffiti(mob/vandal, obj/item/tool)
 	if(isliving(vandal))
 		var/mob/living/living_vandal = vandal
-		if(living_vandal.combat_mode)
+		if(living_vandal.a_intent == INTENT_HARM)
 			return FALSE
 
 	if(!tool.sharpness)

@@ -38,7 +38,7 @@
 #define ITEM_INTERACT_ANY_BLOCKER (ITEM_INTERACT_SUCCESS | ITEM_INTERACT_BLOCKING)
 
 /// Put this in interact_with_atom to just attack instead of interacting if the user has combat mode on.
-#define ATTACK_IF_COMBAT_MODE(user, item) if(user.combat_mode && item.combat_mode_force_attack) { return ITEM_INTERACT_ATTACK }
+#define ATTACK_IF_COMBAT_MODE(user, item) if((user.a_intent == INTENT_HARM) && item.combat_mode_force_attack) { return ITEM_INTERACT_ATTACK }
 
 /// Helper for if an atom has a first class interaction like placing onto a table or into storage.
 #define ATOM_HAS_FIRST_CLASS_INTERACTION(atom) (istable(atom) || atom.atom_storage)

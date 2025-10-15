@@ -27,7 +27,7 @@
 			return
 
 	if(proximity) //It's adjacent, is the user, or is on the user's person
-		if(!ismob(target) || user.combat_mode) //melee attack
+		if(!ismob(target) || user.a_intent == INTENT_HARM) //melee attack
 			return
 
 		if(target == user)
@@ -64,7 +64,7 @@
 /// Called by try_fire_gun() to attempt to fire offhand guns.
 /obj/item/gun/proc/try_fire_akimbo(atom/target, mob/living/user, proximity, params)
 	PRIVATE_PROC(TRUE)
-	if(!ishuman(user) || !user.combat_mode)
+	if(!ishuman(user) || user.a_intent != INTENT_HARM)
 		return
 
 	var/bonus_spread = 0

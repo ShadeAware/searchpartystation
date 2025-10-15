@@ -36,12 +36,12 @@
 
 	if(!skipface)
 		var/age_text
-		switch(age)
-			if(-INFINITY to 25) //what
+		switch(age) //TODO Redo this entire thing because oh my God bruh
+			if(-INFINITY to 19) //what
 				age_text = "very young"
-			if(26 to 35)
-				age_text = "of adult age"
-			if(36 to 55)
+			if(21 to 36)
+				age_text = "young"
+			if(37 to 55)
 				age_text = "middle-aged"
 			if(56 to 75)
 				age_text = "rather old"

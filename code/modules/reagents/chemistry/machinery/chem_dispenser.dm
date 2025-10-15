@@ -276,7 +276,7 @@
 		replace_beaker(user, B)
 		to_chat(user, span_notice("You add [B] to [src]."))
 		cartridges = sortTim(cartridges, GLOBAL_PROC_REF(cmp_text_asc))
-	else if(!user.combat_mode && !istype(I, /obj/item/card/emag))
+	else if(user.a_intent == INTENT_HELP && !istype(I, /obj/item/card/emag))
 		to_chat(user, span_warning("You can't load [I] into [src]!"))
 		return ..()
 	else

@@ -833,10 +833,15 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 
 	if(lit)
 		set_lit(FALSE)
-		if(fancy)
+		if((fancy) && user.a_intent == INTENT_DISARM) //Disarming charm.
 			user.visible_message(
-				span_notice("You hear a quiet click, as [user] shuts off [src] without even looking at what [user.p_theyre()] doing. Wow."),
-				span_notice("You quietly shut off [src] without even looking at what you're doing. Wow.")
+				span_notice("You hear a quiet click, as [user] shuts off [src] without even looking at what [user.p_theyre()] doing."),
+				span_notice("You quietly shut off [src] without even looking at what you're doing.")
+			)
+		else if (user.a_intent == INTENT_HARM)
+			user.visible_message(
+				span_warning("[user] quickly snaps the [src] off."),
+				span_warning("You snap the [src] off.")
 			)
 		else
 			user.visible_message(
@@ -847,7 +852,7 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 
 	set_lit(TRUE)
 
-	if(fancy)
+	if((fancy) && user.a_intent == INTENT_DISARM)
 		user.visible_message(
 			span_notice("Without even breaking stride, [user] flips open and lights [src] in one smooth movement."),
 			span_notice("Without even breaking stride, you flip open and light [src] in one smooth movement.")

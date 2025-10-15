@@ -118,7 +118,7 @@ TYPEINFO_DEF(/obj/item/rsf)
 	return TRUE
 
 /obj/item/rsf/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return
 
 	if(cooldown > world.time)

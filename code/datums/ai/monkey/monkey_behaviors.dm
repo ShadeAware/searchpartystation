@@ -157,9 +157,11 @@
 	var/attack_result
 	// if the target has a weapon, chance to disarm them
 	if(target_weapon && DT_PROB(MONKEY_ATTACK_DISARM_PROB, delta_time))
-		attack_result = monkey_attack(controller, target, delta_time, TRUE)
+		living_pawn.a_intent = INTENT_DISARM
+		monkey_attack(controller, target, delta_time)
 	else
-		attack_result = monkey_attack(controller, target, delta_time, FALSE)
+		living_pawn.a_intent = INTENT_HARM
+		monkey_attack(controller, target, delta_time)
 
 	if(attack_result && try_lose_anger(delta_time, controller, target, MONKEY_HATRED_REDUCTION_PROB))
 		living_pawn.set_combat_mode(FALSE)
@@ -193,48 +195,33 @@
 	return FALSE
 
 /// attack using a held weapon otherwise bite the enemy, then if we are angry there is a chance we might calm down a little
-/datum/ai_behavior/monkey_attack_mob/proc/monkey_attack(datum/ai_controller/controller, mob/living/target, delta_time, disarm, obj/item/target_weapon)
+/datum/ai_behavior/monkey_attack_mob/proc/monkey_attack(datum/ai_controller/controller, mob/living/target, delta_time)
+
 	var/mob/living/living_pawn = controller.pawn
 
 	if(living_pawn.next_move > world.time)
-		return FALSE
+		return
+	living_pawn.changeNext_move(CLICK_CD_MELEE) //We play fair
+	var/obj/item/weapon = locate(/obj/item) in living_pawn.held_items
 
-	//are we holding a gun? can we shoot it? if so, FIRE
-	var/obj/item/gun/gun_to_shoot = locate() in living_pawn.held_items
-	if(gun_to_shoot?.can_fire())
-		if(gun_to_shoot != living_pawn.get_active_held_item())
-			living_pawn.try_swap_hand(living_pawn.get_inactive_hand_index())
+	living_pawn.face_atom(target)
 
-		controller.PawnClick(
-			target = target,
-			combat_mode = TRUE
-		)
-		return TRUE
-
-	//look for any potential weapons we're holding
-	var/obj/item/potential_weapon = locate() in living_pawn.held_items
-	if(!target.IsReachableBy(living_pawn, potential_weapon?.reach))
-		return FALSE
-
-	if(isnull(potential_weapon))
-		controller.PawnClick(
-			target = target,
-			modifiers = disarm ? list(RIGHT_CLICK = TRUE) : null,
-			combat_mode = TRUE
-		)
-
-		if(disarm && !isnull(target_weapon) && controller.blackboard[BB_MONKEY_BLACKLISTITEMS][target_weapon])
-			controller.remove_thing_from_blackboard_key(BB_MONKEY_BLACKLISTITEMS, target_weapon) //lets try to pickpocket it again!
-		return TRUE
-
-	if(potential_weapon != living_pawn.get_active_held_item())
-		living_pawn.try_swap_hand(living_pawn.get_inactive_hand_index())
-
-	controller.PawnClick(
-		target = target,
-		combat_mode = TRUE
-	)
-	return TRUE
+	// attack with weapon if we have one
+	if(weapon)
+		weapon.melee_attack_chain(living_pawn, target)
+	else
+		living_pawn.UnarmedAttack(target)
+	// no de-aggro
+	if(controller.blackboard[BB_MONKEY_AGGRESSIVE])
+		return
+	if(DT_PROB(MONKEY_HATRED_REDUCTION_PROB, delta_time))
+		controller.blackboard[BB_MONKEY_ENEMIES][target]--
+	// if we are not angry at our target, go back to idle
+	if(controller.blackboard[BB_MONKEY_ENEMIES][target] <= 0)
+		var/list/enemies = controller.blackboard[BB_MONKEY_ENEMIES]
+		enemies.Remove(target)
+		if(controller.blackboard[BB_MONKEY_CURRENT_ATTACK_TARGET] == target)
+			finish_action(controller, TRUE)
 
 /datum/ai_behavior/disposal_mob
 	behavior_flags = AI_BEHAVIOR_REQUIRE_MOVEMENT | AI_BEHAVIOR_MOVE_AND_PERFORM //performs to increase frustration

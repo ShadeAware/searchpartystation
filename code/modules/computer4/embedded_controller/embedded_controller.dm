@@ -115,7 +115,7 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 		. += span_info("The panel is unlocked.")
 
 /obj/machinery/c4_embedded_controller/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return NONE
 
 	if(istype(tool, /obj/item/card/id))

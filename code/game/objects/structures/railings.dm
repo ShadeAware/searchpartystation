@@ -40,7 +40,7 @@ TYPEINFO_DEF(/obj/structure/railing)
 	..()
 	I.leave_evidence(user, src)
 
-	if(I.tool_behaviour == TOOL_WELDER && !user.combat_mode)
+	if(I.tool_behaviour == TOOL_WELDER && user.a_intent == INTENT_HELP)
 		if(atom_integrity < max_integrity)
 			if(!I.tool_start_check(user, amount=0))
 				return
@@ -129,7 +129,7 @@ TYPEINFO_DEF(/obj/structure/railing)
 		grab.move_victim_towards(get_turf(src))
 		return ..()
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		visible_message(span_danger("<b>[user] slams <b>[L]</b>'s face against \the [src]!</span>"))
 		playsound(loc, 'sound/effects/grillehit.ogg', 50, 1)
 		var/blocked = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)

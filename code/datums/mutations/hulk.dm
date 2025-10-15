@@ -31,7 +31,7 @@
 /datum/mutation/human/hulk/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
 	SIGNAL_HANDLER
 
-	if(!source.combat_mode || !proximity || LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(source.a_intent != INTENT_HARM || !proximity || LAZYACCESS(modifiers, RIGHT_CLICK))
 		return NONE
 
 	if(!source.can_unarmed_attack())

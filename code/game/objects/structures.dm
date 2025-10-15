@@ -100,7 +100,7 @@
 
 /obj/structure/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
 	. = ..()
-	if(!user.combat_mode)
+	if(!user.a_intent == INTENT_HARM)
 		return
 	if(!grab.target_zone == BODY_ZONE_HEAD)
 		return

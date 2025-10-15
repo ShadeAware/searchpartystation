@@ -9,7 +9,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	PROTECTED_PROC(TRUE)
 
-	if(!user.combat_mode)
+	if(!user.a_intent == INTENT_HARM)
 		var/tool_return = tool_act(user, tool, modifiers)
 		if(tool_return)
 			interaction_fingerprints(user, tool, tool.fingerprint_flags_tool_act, !!tool_return)
@@ -48,7 +48,7 @@
 		interaction_fingerprints(user, tool, fingerprint_flags_item_interaction, !!(self_interaction & ITEM_INTERACT_SUCCESS))
 		return self_interaction
 
-	if(!user.combat_mode || tool.has_combat_mode_interaction)
+	if(!user.a_intent == INTENT_HARM || tool.has_combat_mode_interaction)
 		// Finally, see what the tool has to say about this
 		var/interact_return = is_left_clicking \
 			? tool.interact_with_atom(src, user, modifiers) \

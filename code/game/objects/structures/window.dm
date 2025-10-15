@@ -75,7 +75,7 @@ TYPEINFO_DEF(/obj/structure/window)
 	if(!isliving(user))
 		return
 
-	if(held_item || astype(user, /mob/living).combat_mode)
+	if(held_item || astype(user, /mob/living).a_intent == INTENT_HARM)
 		return
 
 	context[SCREENTIP_CONTEXT_LMB] = "Knock"
@@ -205,15 +205,23 @@ TYPEINFO_DEF(/obj/structure/window)
 	if(!can_be_reached(user))
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-
-	if(!user.combat_mode)
-		user.visible_message(span_notice("[user] knocks on [src]."), \
-			span_notice("You knock on [src]."))
-		knock_on(user)
-	else
-		user.visible_message(span_warning("[user] bashes [src]!"), \
-			span_warning("You bash [src]!"))
-		playsound(src, bash_sound, 100, TRUE)
+	switch(user.a_intent)
+		if(INTENT_HELP)
+			user.visible_message(span_notice("[user] knocks on [src]."), \
+				span_notice("You knock on the [src]."))
+			knock_on(user)
+		if(INTENT_DISARM)
+			user.visible_message(span_warning("[user] impatiently knocks on [src]."), \
+				span_warning("You impatiently knock on [src]."))
+			knock_on(user)
+		if(INTENT_GRAB)
+			user.visible_message(span_notice("[user] pats their palms on [src]."), \
+				span_notice("You pat the [src]."))
+			knock_on(user)
+		else
+			user.visible_message(span_boldwarning("[user] bashes on [src]!"), \
+				span_warning("You bash on [src]!"))
+			playsound(src, bash_sound, 100, TRUE)
 
 /obj/structure/window/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -474,7 +482,7 @@ TYPEINFO_DEF(/obj/structure/window)
 	return reinf && fulltile ? real_explosion_block : 0
 
 /obj/structure/window/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
-	if (!user.combat_mode || !grab.current_grab.enable_violent_interactions)
+	if (!user.a_intent == INTENT_HARM || !grab.current_grab.enable_violent_interactions)
 		return ..()
 
 	var/mob/living/affecting_mob = grab.get_affecting_mob()
@@ -877,7 +885,7 @@ TYPEINFO_DEF(/obj/structure/window/paperframe)
 	. = ..()
 	if(.)
 		return
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		take_damage(4, BRUTE, BLUNT, 0)
 		if(!QDELETED(src))
 			update_appearance()
@@ -899,7 +907,7 @@ TYPEINFO_DEF(/obj/structure/window/paperframe)
 	if(W.get_temperature())
 		fire_act(null, W.get_temperature(), null)
 		return
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(istype(W, /obj/item/paper) && atom_integrity < max_integrity)
 		user.visible_message(span_notice("[user] starts to patch the holes in \the [src]."))

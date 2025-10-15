@@ -191,13 +191,13 @@
 	//If they're a human, and they're not in help intent, block pushing
 	if(ishuman(M))
 		var/mob/living/carbon/human/human = M
-		if(human.combat_mode)
+		if(human.a_intent != INTENT_HELP || human.combat_mode)
 			return TRUE
 
 	//if they are a cyborg, and they're alive and in combat mode, block pushing
 	if(iscyborg(M))
 		var/mob/living/silicon/robot/borg = M
-		if(borg.combat_mode && borg.stat != DEAD)
+		if(borg.a_intent != INTENT_HELP && borg.stat != DEAD)
 			return TRUE
 
 	//anti-riot equipment is also anti-push
@@ -215,7 +215,7 @@
 
 	if(isliving(other))
 		var/mob/living/other_living = other
-		their_combat_mode = other_living.combat_mode
+		their_combat_mode = other_living.a_intent == INTENT_HARM
 		they_can_move = other_living.mobility_flags & MOBILITY_MOVE
 
 	var/too_strong = other.move_resist > move_force
@@ -1170,7 +1170,7 @@
 	var/mob/living/new_mob
 
 	if(!randomize)
-		randomize = pick("monkey","robot","slime","xeno","humanoid","animal")
+		randomize = pick("monkey","robot","slime","humanoid","animal")
 	switch(randomize)
 		if("monkey")
 			new_mob = new /mob/living/carbon/human/species/monkey(loc)
@@ -1197,20 +1197,6 @@
 
 		if("slime")
 			new_mob = new /mob/living/simple_animal/slime/random(loc)
-
-		if("xeno")
-			var/xeno_type
-			if(ckey)
-				xeno_type = pick(
-					/mob/living/carbon/alien/humanoid/hunter,
-					/mob/living/carbon/alien/humanoid/sentinel,
-				)
-			else
-				xeno_type = pick(
-					/mob/living/carbon/alien/humanoid/hunter,
-					/mob/living/simple_animal/hostile/alien/sentinel,
-				)
-			new_mob = new xeno_type(loc)
 
 		if("animal")
 			var/path = pick(
@@ -1532,7 +1518,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/mob/living/U = user
 	if(isliving(dropping))
 		var/mob/living/M = dropping
-		if(U.is_grabbing(M) && !U.combat_mode && mob_size > M.mob_size)
+		if(U.is_grabbing(M) && !U.a_intent == INTENT_HARM && mob_size > M.mob_size)
 			M.mob_try_pickup(U)//blame kevinz
 			return//dont open the mobs inventory if you are picking them up
 	. = ..()
@@ -2028,22 +2014,26 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * It is also used to process martial art attacks by nonhumans, even against humans
  * Human vs human attacks are handled in species code right now.
  */
-/mob/living/proc/apply_martial_art(mob/living/target, modifiers, is_grab = FALSE)
+/mob/living/proc/apply_martial_art(mob/living/target, modifiers)
 	if(HAS_TRAIT(target, TRAIT_MARTIAL_ARTS_IMMUNE))
-		return MARTIAL_ATTACK_INVALID
+		return FALSE
+	if(ishuman(target) && ishuman(src)) //Human vs human are handled in species code
+		return FALSE
 	var/datum/martial_art/style = mind?.martial_art
-	if (!style)
-		return MARTIAL_ATTACK_INVALID
-	// will return boolean below since it's not invalid
-	if (is_grab)
-		return style.grab_act(src, target)
-	if (LAZYACCESS(modifiers, RIGHT_CLICK))
-		return style.disarm_act(src, target)
-	if(combat_mode)
-		if (HAS_TRAIT(src, TRAIT_PACIFISM))
-			return FALSE
-		return style.harm_act(src, target)
-	return style.help_act(src, target)
+	var/attack_result = FALSE
+	if (style)
+		switch (a_intent)
+			if (INTENT_GRAB)
+				attack_result = style.grab_act(src, target)
+			if (INTENT_HARM)
+				if (HAS_TRAIT(src, TRAIT_PACIFISM))
+					return FALSE
+				attack_result = style.harm_act(src, target)
+			if (INTENT_DISARM)
+				attack_result = style.disarm_act(src, target)
+			if (INTENT_HELP)
+				attack_result = style.help_act(src, target)
+	return attack_result
 
 /**
  * Returns an assoc list of assignments and minutes for updating a client's exp time in the databse.

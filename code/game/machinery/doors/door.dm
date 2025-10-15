@@ -66,6 +66,9 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	///Sound to play when knocked on
 	var/knock_sound = 'goon/sounds/Door_Metal_Knock_1.ogg'
 
+	///Sound to play when slammed on
+	var/slam_sound = 'sound/effects/metal_doorslam.ogg'
+
 	/// Sparks caused by damage and such
 	var/datum/effect_system/spark_spread/spark_system
 
@@ -310,9 +313,11 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	. = ..()
 	if(.)
 		return
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(LAZYACCESS(modifiers, RIGHT_CLICK) || user.a_intent == INTENT_DISARM)
 		knock_on(user)
 		return TRUE
+	if(user.a_intent == INTENT_HARM)
+		slam_on(user)
 	if(try_remove_seal(user))
 		return
 	if(try_safety_unlock(user))
@@ -379,7 +384,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/crowbar_act(mob/living/user, obj/item/tool)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return
 
 	var/forced_open = FALSE
@@ -390,7 +395,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/door/attackby(obj/item/I, mob/living/user, params)
-	if((I.item_flags & NOBLUDGEON) || user.combat_mode)
+	if((I.item_flags & NOBLUDGEON) || user.a_intent == INTENT_HARM)
 		return ..()
 
 	if(istype(I, /obj/item/fireaxe))
@@ -613,7 +618,15 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 
 /obj/machinery/door/proc/knock_on(mob/user)
 	user?.changeNext_move(CLICK_CD_MELEE)
+	user.visible_message(span_notice("[user] knocks on [src]."), span_notice("You knock on [src]."))
 	playsound(src, knock_sound, 100, TRUE)
+	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
+
+/obj/machinery/door/proc/slam_on(mob/user)
+	user?.changeNext_move(CLICK_CD_MELEE)
+	user.visible_message(span_notice("[user] slams on the [src]!"), span_notice("You slam on the [src]!"))
+	playsound(src, slam_sound, 100, TRUE)
 	add_fingerprint(user)
 	user?.animate_interact(src, INTERACT_GENERIC)
 

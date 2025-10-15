@@ -659,11 +659,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		return
 	if(HAS_TRAIT(C, TRAIT_ALCOHOL_TOLERANCE))
 		ingest_met = 0.8
-	// if you don't have a liver, or your liver isn't an officer's liver
-	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
-	if(!liver || !HAS_TRAIT(liver, TRAIT_LAW_ENFORCEMENT_METABOLISM))
-		beepsky_hallucination = new()
-		C.gain_trauma(beepsky_hallucination, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/reagent/consumable/ethanol/beepsky_smash/affect_ingest(mob/living/carbon/C, removed)
 	. = ..()
@@ -682,8 +677,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /datum/reagent/consumable/ethanol/beepsky_smash/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_INGEST)
 		return
-	if(beepsky_hallucination)
-		QDEL_NULL(beepsky_hallucination)
 
 /datum/reagent/consumable/ethanol/beepsky_smash/overdose_start(mob/living/carbon/C)
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
@@ -2447,18 +2440,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_icon_state = "thejuice"
 	glass_name = "The Juice"
 	glass_desc = "A concoction of not-so-edible things that apparently lets you feel like you're in two places at once"
-
-	var/datum/brain_trauma/special/bluespace_prophet/prophet_trauma
-
-/datum/reagent/consumable/ethanol/the_juice/on_mob_metabolize(mob/living/carbon/C, class)
-	if(class == CHEM_INGEST)
-		prophet_trauma = new()
-		C.gain_trauma(prophet_trauma, TRAUMA_RESILIENCE_ABSOLUTE)
-
-/datum/reagent/consumable/ethanol/the_juice/on_mob_end_metabolize(mob/living/carbon/C, class)
-	if(class == CHEM_INGEST)
-		if(prophet_trauma)
-			QDEL_NULL(prophet_trauma)
 
 //a jacked up absinthe that causes hallucinations to the game master controller basically, used in smuggling objectives
 /datum/reagent/consumable/ethanol/ritual_wine

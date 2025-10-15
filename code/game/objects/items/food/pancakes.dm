@@ -143,7 +143,7 @@
 	update_appearance()
 
 /obj/item/food/pancakes/get_attacking_item(mob/living/user, atom/target)
-	if(!user.combat_mode && contents.len)
+	if(!user.a_intent == INTENT_HARM && contents.len)
 		return contents[contents.len]
 	return ..()
 

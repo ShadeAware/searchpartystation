@@ -86,7 +86,7 @@ TYPEINFO_DEF(/obj/machinery/disposal)
 	trunk_check()
 
 /obj/machinery/disposal/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		return NONE
 
 	if((tool.item_flags & ABSTRACT))

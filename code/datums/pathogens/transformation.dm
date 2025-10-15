@@ -69,7 +69,7 @@
 		if(istype(new_mob))
 			if(bantype && is_banned_from(affected_mob.ckey, bantype))
 				replace_banned_player(new_mob)
-			new_mob.set_combat_mode(TRUE)
+			new_mob.a_intent = INTENT_HARM
 			if(affected_mob.mind)
 				affected_mob.mind.transfer_to(new_mob)
 			else
@@ -175,41 +175,6 @@
 		if(4)
 			if (DT_PROB(10, delta_time))
 				affected_mob.say(pick("beep, beep!", "Boop bop boop beep.", "kkkiiiill mmme", "I wwwaaannntt tttoo dddiiieeee..."), forced = "robotic transformation")
-
-
-/datum/pathogen/transformation/xeno
-
-	name = "Xenomorph Transformation"
-	cure_text = "Spaceacillin & Glycerol"
-	cures = list(/datum/reagent/medicine/spaceacillin, /datum/reagent/glycerol)
-	cure_chance = 2.5
-	agent = "Rip-LEY Alien Microbes"
-	desc = "This disease changes the victim into a xenomorph."
-	severity = PATHOGEN_SEVERITY_BIOHAZARD
-	visibility_flags = NONE
-	stage1 = list()
-	stage2 = list("Your throat feels scratchy.", "<span class='danger'>Kill...</span>")
-	stage3 = list("<span class='danger'>Your throat feels very scratchy.</span>", "Your skin feels tight.", "<span class='danger'>You can feel something move...inside.</span>")
-	stage4 = list("<span class='danger'>Your skin feels very tight.</span>", "<span class='danger'>Your blood boils!</span>", "<span class='danger'>You can feel... something...inside you.</span>")
-	stage5 = list("<span class='danger'>Your skin feels as if it's about to burst off!</span>")
-	new_form = /mob/living/carbon/alien/humanoid/hunter
-	bantype = ROLE_ALIEN
-
-
-/datum/pathogen/transformation/xeno/on_process(delta_time, times_fired)
-	. = ..()
-	if(!.)
-		return
-
-	switch(stage)
-		if(3)
-			if(DT_PROB(2, delta_time))
-				to_chat(affected_mob, span_danger("You feel a stabbing pain in your head."))
-				affected_mob.Unconscious(40)
-		if(4)
-			if(DT_PROB(10, delta_time))
-				affected_mob.say(pick("You look delicious.", "Going to... devour you...", "Hsssshhhhh!"), forced = "xenomorph transformation")
-
 
 /datum/pathogen/transformation/slime
 	name = "Advanced Mutation Transformation"

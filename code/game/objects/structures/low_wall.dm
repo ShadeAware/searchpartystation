@@ -127,7 +127,7 @@ TYPEINFO_DEF(/obj/structure/low_wall)
 		var/obj/item/stack/sheet/my_sheet = weapon
 		if(my_sheet.try_install_window(user, src.loc, src))
 			return TRUE
-	if(!user.combat_mode && !(weapon.item_flags & ABSTRACT))
+	if(!user.a_intent == INTENT_HARM && !(weapon.item_flags & ABSTRACT))
 		if(user.transferItemToLoc(weapon, loc, silent = FALSE, user_click_modifiers = modifiers))
 			return TRUE
 	return ..()
