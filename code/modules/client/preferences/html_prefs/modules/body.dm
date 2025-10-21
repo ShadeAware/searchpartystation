@@ -21,8 +21,8 @@
 	. += {"
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
-			<b>Who Am I</b>
-			<span class='tooltiptext'>Select your shroud.</span>
+			<b>Identity</b>
+			<span class='tooltiptext'>Identify yourself.</span>
 		</legend>
 	<table style='width:100%'>
 	"}

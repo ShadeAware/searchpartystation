@@ -224,6 +224,9 @@
 	if((job.job_flags & JOB_ASSIGN_QUIRKS) && humanc && CONFIG_GET(flag/roundstart_traits))
 		SSquirks.AssignQuirks(humanc, humanc.client)
 
+	if(humanc)
+		SSstats.apply_stats_from_prefs(humanc, humanc.client)
+
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
 	character.client?.give_award(/datum/award/achievement/enter_the_pool, character)
 
@@ -259,10 +262,6 @@
 	new_character.PossessByPlayer(key)
 	new_character.client?.stoptitlemusic()
 	new_character.client?.show_location_blurb()
-
-	var/area/joined_area = get_area(new_character.loc)
-	if(joined_area)
-		joined_area.on_joining_game(new_character)
 
 	new_character = null
 	qdel(src)

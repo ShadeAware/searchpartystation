@@ -235,30 +235,9 @@
 			span_warning("[user] attempts to remove [weapon] from [limb_owner]'s [limb.plaintext_zone].")
 		)
 
-	if(harmful && user.stats.cooldown_finished("ripout_embed_check"))
-		user.stats.set_cooldown("ripout_embed_check", INFINITY)
-		var/datum/roll_result/result = user.stat_roll(12, /datum/rpg_skill/handicraft)
-		result.do_skill_sound(user)
-		switch(result.outcome)
-			if(CRIT_SUCCESS)
-				harmful = FALSE
-				time_taken = 0
-				to_chat(user, result.create_tooltip("Many hours spent on delicate projects has prepared you for this moment."))
-
-			if(SUCCESS)
-				time_taken = time_taken * 0.2
-				to_chat(user, result.create_tooltip("Your hands are more than accustomed to careful tasks."))
-
-			if(CRIT_FAILURE)
-				to_chat(user, result.create_tooltip("At a crucial moment, you second guess yourself, pressing the object deeper into your flesh."))
-				user.stats.set_cooldown("ripout_embed_check", 5 MINUTES)
-				rip_out_damage(limb)
-				return
 
 	if(!do_after(user, limb_owner, time = time_taken, timed_action_flags = DO_PUBLIC, display = image('icons/hud/do_after.dmi', "help")))
 		return
-
-	user.stats.set_cooldown("ripout_embed_check", 0)
 
 	if(!weapon || !limb || weapon.loc != limb || !(weapon in limb.embedded_objects))
 		qdel(src)

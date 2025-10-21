@@ -782,10 +782,6 @@ TYPEINFO_DEF(/atom)
 			else
 				. += span_alert("It looks empty.")
 
-	if(ishuman(user) && !ismovable(loc) && !ismob(src))
-		var/mob/living/carbon/human/human_user = user
-		human_user.forensic_analysis_roll(src)
-
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
 /**
@@ -815,20 +811,6 @@ TYPEINFO_DEF(/atom)
 
 	. = list()
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE_MORE, user, .)
-
-/**
- * Called when a human examines (shift click or verb) this atom. Called after the examine text is displayed.
- *
- * This is for placing disco elysium style flavor text that follows an examine message only once.
- * * Arguments:
- * - user: The mob examining.
- * - nearby: Set to TRUE if the mob is within 1 turf.
- */
-/atom/proc/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
-	SHOULD_CALL_PARENT(TRUE)
-
-	SEND_SIGNAL(src, COMSIG_DISCO_FLAVOR, user, nearby, is_station_level)
-
 
 /**
  * Updates the appearence of the icon

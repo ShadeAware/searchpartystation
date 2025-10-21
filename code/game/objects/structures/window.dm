@@ -99,25 +99,6 @@ TYPEINFO_DEF(/obj/structure/window)
 		else
 			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
 
-/obj/structure/window/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
-	. = ..()
-	if(!nearby || !is_station_level)
-		return
-
-	if(isspaceturf(get_turf(user)))
-		return
-
-	if(!(locate(/turf/open/space) in get_adjacent_open_turfs(src)))
-		return
-
-	var/datum/roll_result/result = user.get_examine_result("window_flavor", 13, only_once = TRUE)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		to_chat(
-			user,
-			result.create_tooltip("The glass is cold to the touch. Cold eternity beckons you to the other side."),
-		)
-
 /obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)

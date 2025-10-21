@@ -76,25 +76,8 @@
 	owner.mob_mood.add_mood_event("forcednoir", /datum/mood_event/noir_victim)
 	RegisterSignal(owner, COMSIG_ENTER_AREA, PROC_REF(owner_entered_area))
 
-	var/datum/roll_result/result = owner.stat_roll(15, /datum/rpg_skill/willpower)
-	switch(result.outcome)
-		if(FAILURE, CRIT_FAILURE)
-			owner.apply_status_effect(/datum/status_effect/skill_mod/intimidated)
-			if(istype(owner.buckled, /obj/structure/chair))
-				pinned_to_chair = TRUE
-				RegisterSignal(owner.buckled, COMSIG_MOVABLE_PRE_UNBUCKLE_MOB, PROC_REF(on_unbuckle_attempt))
-				RegisterSignal(owner.buckled, COMSIG_MOVABLE_UNBUCKLE, PROC_REF(on_unbuckle))
-				RegisterSignal(owner, list(COMSIG_PARENT_ATTACKBY, COMSIG_ATOM_GET_GRABBED, COMSIG_HUMAN_DISARM_HIT, COMSIG_ATOM_ATTACK_HAND), PROC_REF(on_owner_attack))
-
-			if(owner.stats.cooldown_finished("noir_intimidation"))
-				owner.stats.set_cooldown("noir_intimidation", INFINITY)
-				result.do_skill_sound(owner)
-				to_chat(owner, result.create_tooltip("A heavy fog rolls in, and the shadows grow louder. You have entered the lion's den."))
-
 /datum/status_effect/noir_in_area/on_remove()
 	. = ..()
-	owner.remove_status_effect(/datum/status_effect/skill_mod/intimidated)
-	owner.remove_client_colour(/datum/client_colour/monochrome/noir)
 	owner.mob_mood.clear_mood_event("forcednoir")
 	if(pinned_to_chair)
 		clear_intimidation_signals(owner.buckled)
@@ -114,22 +97,6 @@
 	SIGNAL_HANDLER
 	if(buckled != owner)
 		return
-
-	if(!owner.stats.cooldown_finished("det_intimiate_chair_lock"))
-		return COMPONENT_BLOCK_UNBUCKLE
-
-	owner.stats.set_cooldown("det_intimiate_chair_lock", 3 SECONDS)
-
-	var/datum/roll_result/result = owner.stat_roll(18, /datum/rpg_skill/willpower, getup_check_modifier)
-	switch(result.outcome)
-		if(FAILURE, CRIT_FAILURE)
-			result.do_skill_sound(owner)
-			to_chat(owner, result.create_tooltip("You are pinned to [source] by the gravitational force of the detective."))
-			getup_check_modifier += 2
-			return COMPONENT_BLOCK_UNBUCKLE
-		else
-			result.do_skill_sound(owner)
-			to_chat(owner, result.create_tooltip("You triumphantly free yourself from the investigator's gaze."))
 
 /datum/status_effect/noir_in_area/proc/on_unbuckle(datum/source, mob/buckled, force)
 	SIGNAL_HANDLER

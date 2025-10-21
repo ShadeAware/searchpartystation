@@ -53,7 +53,9 @@
 	var/lip_style = null //no lipstick by default- arguably misleading, as it could be used for general makeup
 	var/lip_color = "white"
 
-	var/age = 30 //Player's age
+	//Age is split into two parts:
+	var/age = 30 //Character's biological age; IE the physiological senesence/deterioration of their body.
+	var/chronological_age = 30 //Character's chronological age; IE how long they've actually been alive since birth.
 
 	//consider updating /mob/living/carbon/human/copy_clothing_prefs() if adding more of these
 	var/underwear = "Nude" //Which underwear the player wants

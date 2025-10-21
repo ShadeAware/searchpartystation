@@ -269,6 +269,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(needs_update >= 0)
 		update_character(needs_update, save_data) //needs_update == savefile_version if we need an update (positive integer)
 
+	storyteller_stats = save_data?["storyteller_stats"]
+	storyteller_stats = SANITIZE_LIST(storyteller_stats)
+	storyteller_stats = SSstats.sanitize_stat_list(storyteller_stats)
+
 	return TRUE
 
 /datum/preferences/proc/save_character()
@@ -296,6 +300,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//Write prefs
 	save_data["alt_job_titles"] = alt_job_titles
+
+	save_data["storyteller_stats"] = storyteller_stats
 
 	return TRUE
 

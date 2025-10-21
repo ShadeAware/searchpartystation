@@ -52,7 +52,6 @@
 
 /datum/job/detective/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
-	spawned.apply_status_effect(/datum/status_effect/skill_mod/detective)
 
 /datum/job/detective/before_roundstart_possess(mob/living/spawning)
 	. = ..()

@@ -414,13 +414,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 			if(area_flags & SHOW_NAME)
 				M.client.show_location_blurb(2 SECONDS, FALSE, TRUE)
 
-			if(flavor_text_key && length(flavor_texts) && ishuman(M))
-				var/mob/living/carbon/human/H = M
-				var/datum/roll_result/result = H.get_examine_result(flavor_text_key, 17)
-				if(result?.outcome >= SUCCESS)
-					to_chat(H, result.create_tooltip(get_flavor_string()))
-					result.do_skill_sound(H)
-
 	if(!arrived.important_recursive_contents?[RECURSIVE_CONTENTS_AREA_SENSITIVE])
 		return
 
@@ -493,16 +486,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /// A hook so areas can modify the incoming args (of what??)
 /area/proc/PlaceOnTopReact(list/new_baseturfs, turf/fake_turf_type, flags)
 	return flags
-
-
-/// Called when a living mob that spawned here, joining the round, receives the player client.
-/area/proc/on_joining_game(mob/living/boarder)
-	SHOULD_CALL_PARENT(TRUE)
-	if(prob(5) && boarder.client && ishuman(boarder) && flavor_text_key && length(flavor_texts))
-		var/mob/living/carbon/human/H = boarder
-		var/datum/roll_result/result = H.get_examine_result(flavor_text_key, modifier = 999)
-		to_chat(H, result.create_tooltip(get_flavor_string()))
-		result.do_skill_sound(H)
 
 ///Called by airalarms and firealarms to communicate the status of the area to relevant machines
 /area/proc/communicate_fire_alert(code)

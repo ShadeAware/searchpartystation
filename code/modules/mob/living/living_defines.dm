@@ -25,8 +25,6 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// The mob's current health.
 	var/health = MAX_LIVING_HEALTH
 
-	/// The container for stats and skills
-	var/datum/stats/stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
 	/// Mood datum, can be null.
@@ -225,3 +223,6 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/stasis_level = 0
 	/// List of stasis sources to their given value
 	var/list/stasis_sources = list()
+
+	//Holder for this mob's available skills
+	var/datum/skill_holder/skill_holder

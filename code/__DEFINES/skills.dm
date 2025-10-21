@@ -1,36 +1,54 @@
+/// Default skill points, including the costs of default skill selection (board-crossing 2s)
+#define SKILL_POINTS_MAX 230
+/// Scaling cost of skills
+#define SKILL_COST_SCALE_NORMAL 2
+#define SKILL_COST_SCALE_COMPLEX 4
 
-// Skill levels
-#define SKILL_LEVEL_NONE 1
-#define SKILL_LEVEL_NOVICE 2
-#define SKILL_LEVEL_APPRENTICE 3
-#define SKILL_LEVEL_JOURNEYMAN 4
-#define SKILL_LEVEL_EXPERT 5
-#define SKILL_LEVEL_MASTER 6
-#define SKILL_LEVEL_LEGENDARY 7
+/// Skill categories
+#define SKILL_CATEGORY_COMBATIVE "Combative"
+#define SKILL_CATEGORY_TECHNICAL "Technical"
+#define SKILL_CATEGORY_CONCEPTUAL "Conceptual"
+#define SKILL_CATEGORY_ESOTERICA "Esoterica"
 
-#define SKILL_LVL 1
-#define SKILL_EXP 2
+#define ATTRIBUTE_CATEGORY "Attributes"
 
-// Level experience requirements
-#define SKILL_EXP_NONE 0
-#define SKILL_EXP_NOVICE 100
-#define SKILL_EXP_APPRENTICE 250
-#define SKILL_EXP_JOURNEYMAN 500
-#define SKILL_EXP_EXPERT 900
-#define SKILL_EXP_MASTER 1500
-#define SKILL_EXP_LEGENDARY 2500
+////////////////////////// ATTRIBUTE DEFINES ///////////////////////////
 
-//Allows us to get EXP from level, or level from EXP
-#define SKILL_EXP_LIST list(SKILL_EXP_NONE, SKILL_EXP_NOVICE, SKILL_EXP_APPRENTICE, SKILL_EXP_JOURNEYMAN, SKILL_EXP_EXPERT, SKILL_EXP_MASTER, SKILL_EXP_LEGENDARY)
+#define ATR_PHYS
+#define ATR_DEX
+#define ATR_FLEX
+#define ATR_END
 
-//Skill modifier types
-#define SKILL_SPEED_MODIFIER "skill_speed_modifier"//ideally added/subtracted in speed calculations to make you do stuff faster
-#define SKILL_PROBS_MODIFIER "skill_probability_modifier"//ideally added/subtracted where beneficial in prob(x) calls
-#define SKILL_RANDS_MODIFIER "skill_randomness_modifier"//ideally added/subtracted where beneficial in rand(x,y) calls
+//////////////////////////// SKILL DEFINES ////////////////////////////
 
-// Gets the reference for the skill type that was given
-#define GetSkillRef(A) (SSskills.all_skills[A])
+///COMBATIVE
+#define SK_BRAWLING
+#define SK_HAND2HAND
+#define SK_AIMING
+#define SK_DEFENSE
 
-//number defines
-#define CLEAN_SKILL_BEAUTY_ADJUSTMENT -15//It's a denominator so no 0. Higher number = less cleaning xp per cleanable. Negative value means cleanables with negative beauty give xp.
-#define CLEAN_SKILL_GENERIC_WASH_XP 1.5//Value. Higher number = more XP when cleaning non-cleanables (walls/floors/lips)
+//TECHNICAL
+#define SK_CONSTRUCTION
+#define SK_MINING
+#define SK_MECHANICS
+#define SK_TINKERING
+#define SK_LOCOMOTION
+#define SK_ELECTRONICS
+#define SK_AGRICULTURE
+#define SK_SANITATION
+
+//CONCEPTUAL
+#define SK_MEDICINE
+#define SK_ANATOMY
+#define SK_BIOSCULPTING
+#define SK_CHEMISTRY
+#define SK_INFOTECH
+#define SK_COOKING
+#define SK_LAW
+#define SK_FORENSICS
+
+//ESOTERICA
+#define SK_AIPROGRAM
+#define SK_EXOTICPHYS
+#define SK_NANOMACHINES
+#define SK_BIOFORGING

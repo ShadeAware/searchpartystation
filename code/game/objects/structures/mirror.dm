@@ -1,7 +1,7 @@
 //wip wip wup
 /obj/structure/mirror
 	name = "mirror"
-	desc = "Mirror mirror on the wall, who's the most robust of them all?"
+	desc = "A sheer reflective surface for admiring yourself and all of your blemishes. Or lackthereof, Narcissus."
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "mirror"
 	density = FALSE
@@ -63,35 +63,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 		return list()// no message spam
 	return ..()
 
-/obj/structure/mirror/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
-	. = ..()
-	if(!nearby)
-		return
-
-	if(broken)
-		var/datum/roll_result/result = user.get_examine_result("mirror_broken", 11, /datum/rpg_skill/forensics, only_once = TRUE)
-		if(result?.outcome >= SUCCESS)
-			result.do_skill_sound(user)
-			to_chat(
-				user,
-				result.create_tooltip("The corpse of a mirror lies grotesquely bolted to the wall. Below it lies shards that no longer fit into the whole. The shards are still clear, this crime must have been recent."),
-			)
-		return
-
-	var/datum/roll_result/result = user.get_examine_result("mirror_reflection", 15, only_once = TRUE)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		to_chat(
-			user,
-			result.create_tooltip("An old mirror hangs on the wall. You are unable to find yourself in it's reflection."),
-		)
-
 /obj/structure/mirror/attacked_by(obj/item/I, mob/living/user)
 	if(broken || !istype(user) || !I.force)
 		return ..()
 
 	. = ..()
-	if(broken) // breaking a mirror truly gets you bad luck!
+	if(broken && prob(1)) // breaking a mirror truly gets you bad luck!
 		to_chat(user, span_warning("A chill runs down your spine as [src] shatters..."))
 		user.AddComponent(/datum/component/omen, silent = TRUE) // we have our own message
 
@@ -100,7 +77,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 		return ..()
 
 	. = ..()
-	if(broken) // breaking a mirror truly gets you bad luck!
+	if(broken && prob(1)) // breaking a mirror truly gets you bad luck!
 		var/mob/living/unlucky_dude = P.firer
 		to_chat(unlucky_dude, span_warning("A chill runs down your spine as [src] shatters..."))
 		unlucky_dude.AddComponent(/datum/component/omen, silent=TRUE) // we have our own message
@@ -113,7 +90,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 	if(!mapload)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	if(desc == initial(desc))
-		desc = "Oh no, seven years of bad luck!"
+		desc = "A shattered pane of gnarled, jagged shards. Completely useless, now."
 	broken = TRUE
 
 /obj/structure/mirror/deconstruct(disassembled = TRUE)

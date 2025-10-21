@@ -208,32 +208,6 @@
 			mob_mood.clear_mood_event("pain")
 
 	if(pain >= max(SHOCK_MIN_PAIN_TO_BEGIN, shock_stage * 0.8))
-		// A chance to fight through the pain.
-		if((shock_stage >= SHOCK_TIER_3) && stat == CONSCIOUS && !heart_attack_gaming && stats.cooldown_finished("shrug_off_pain"))
-			var/datum/roll_result/result = stat_roll(12, /datum/rpg_skill/willpower)
-			switch(result.outcome)
-				if(CRIT_SUCCESS)
-					to_chat(src, result.create_tooltip("Pain is temporary, I will not die on this day!"))
-					shock_stage = max(shock_stage - 15, 0)
-					stats.set_cooldown("shrug_off_pain", 180 SECONDS)
-					return
-
-				if(SUCCESS)
-					shock_stage = max(shock_stage - 5, 0)
-					to_chat(src, result.create_tooltip("Not here, not now."))
-					stats.set_cooldown("shrug_off_pain", 180 SECONDS)
-					return
-
-				if(FAILURE)
-					stats.set_cooldown("shrug_off_pain", 30 SECONDS)
-					// Do not return
-
-				if(CRIT_FAILURE)
-					shock_stage = min(shock_stage + 1, SHOCK_MAXIMUM)
-					to_chat(src, result.create_tooltip("I'm going to die here."))
-					stats.set_cooldown("shrug_off_pain", 60 SECONDS)
-					// Do not return
-
 		if(shock_stage == 0)
 			throw_alert("traumatic shock", /atom/movable/screen/alert/shock)
 		shock_stage = min(shock_stage + 1, SHOCK_MAXIMUM)
@@ -346,9 +320,6 @@
 		if(highest_bp_pain > PAIN_THRESHOLD_REDUCE_SLEEP)
 			AdjustSleeping(-(highest_bp_pain / 5) SECONDS)
 
-		if(highest_bp_pain > PAIN_THRESHOLD_DROP_ITEM && COOLDOWN_FINISHED(src, pain_cooldowns["drop_item"]))
-			pain_drop_item(highest_bp_pain)
-
 		var/burning = damaged_part.burn_dam > damaged_part.brute_dam
 		var/msg
 		var/highest_bp_pain_class = pain_class(highest_bp_pain)
@@ -422,47 +393,6 @@
 				pain_message("Your body aches all over, it's driving you mad.", PAIN_AMT_AGONIZING, TRUE)
 
 	update_health_hud()
-
-/// Called by handle_pain() to consider dropping an item based on Willpower.
-/mob/living/carbon/proc/pain_drop_item(pain_amt)
-	// For every 30 points of pain above the threshold, the roll is modified by -1
-	var/roll_modifier = floor(max(0, pain_amt - PAIN_THRESHOLD_DROP_ITEM) / -50)
-	/// ~17% chance to fail baseline.
-	var/datum/roll_result/result = stat_roll(8, /datum/rpg_skill/willpower, roll_modifier)
-
-	var/obj/item/held_item = get_active_held_item()
-
-	switch(result.outcome)
-		if(CRIT_FAILURE)
-			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)
-			if(!length(held_items))
-				return
-
-			result.do_skill_sound(src)
-			to_chat(src, result.create_tooltip("A streak of pain shoots throughout your whole body."))
-			drop_all_held_items()
-			visible_message(span_warning("<b>[src]</b>'s body spasms, and [p_they()] drop[p_s()] what [p_they()] [p_were()] holding."), ignored_mobs = list(src))
-
-		if(FAILURE)
-			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)
-			if(!held_item || !dropItemToGround(held_item))
-				return
-
-			result.do_skill_sound(src)
-			var/side = IS_RIGHT_INDEX(active_hand_index) ? "right" : "left"
-			to_chat(src, result.create_tooltip("A bolt of pain shoots through your [side] hand."))
-			visible_message(span_warning("<b>[src]</b>'s [side] arm twitches, dropping [held_item]."), ignored_mobs = list(src))
-
-		if(SUCCESS)
-			COOLDOWN_START(src, pain_cooldowns["drop_item"], 20 SECONDS)
-
-		if(CRIT_SUCCESS)
-			COOLDOWN_START(src, pain_cooldowns["drop_item"], 120 SECONDS)
-			if(!held_item)
-				return
-
-			result.do_skill_sound(src)
-			to_chat(src, result.create_tooltip("Hold on. Grip your [held_item.name] tightly."))
 
 /// Converts a pain value to a "class" of pain.
 /proc/pain_class(pain_amt)

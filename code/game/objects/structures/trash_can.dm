@@ -43,29 +43,6 @@ TYPEINFO_DEF(/obj/structure/trash_can)
 			else
 				. += span_info("It is almost overflowing.")
 
-	var/datum/roll_result/result = user.get_examine_result("trashcan_examine", 11)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		. += result.create_tooltip("A relic of municipal design, the steel trash can stands stoic and immovable. Chipped paint and rust's first blossom rides along the rim, a symbol time has long forgotten, faded away on the side.", body_only = TRUE)
-
-/obj/structure/trash_can/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
-	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("trashcan_flavor", 11, only_once = TRUE)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		to_chat(
-			user,
-			result.create_tooltip("An envelope falls into it's metal tomb, staring up at its previous owner as a tear falls upon it. Soft weeping echoes throughout the hollow chamber as the man fades into the cityscape."),
-		)
-	else
-		var/datum/roll_result/other_result = user.get_examine_result("trashcan_federation_flavor", 12, only_once = TRUE)
-		if(other_result?.outcome >= SUCCESS)
-			other_result.do_skill_sound(user)
-			to_chat(
-				user,
-				other_result.create_tooltip("A faceless worker bearing the emblem of the Federation stands up, admiring his work with a wide smile."),
-			)
-
 /obj/structure/trash_can/update_overlays()
 	. = ..()
 	if(trash_bag)
@@ -95,14 +72,7 @@ TYPEINFO_DEF(/obj/structure/trash_can)
 	if(!isitem(AM) || !trash_bag)
 		return ..()
 
-	if(isliving(throwingdatum.thrower))
-		var/mob/living/thrower = throwingdatum.thrower
-		var/datum/roll_result/result = thrower.stat_roll(4, /datum/rpg_skill/handicraft, -ceil(get_dist_euclidean(src, throwingdatum.origin_turf)))
-		if(result.outcome < SUCCESS)
-			visible_message(span_warning("[AM] bounces off of [src]'s rim."))
-			return ..()
-
-	else if(prob(25))
+	if(prob(25))
 		visible_message(span_warning("[AM] bounces off of [src]'s rim."))
 		return ..()
 

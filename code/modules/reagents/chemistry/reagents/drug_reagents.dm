@@ -91,12 +91,10 @@
 /datum/reagent/drug/nicotine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return
-	C.stats?.set_skill_modifier(1, /datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE)
 
 /datum/reagent/drug/nicotine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return
-	C.stats?.remove_skill_modifier(/datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE)
 
 /datum/reagent/drug/nicotine/overdose_process(mob/living/carbon/C)
 	. = ..()
@@ -310,16 +308,9 @@
 
 /datum/reagent/drug/maint/powder/affect_blood(mob/living/carbon/C, removed)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * removed, updating_health = FALSE)
-
-	// 5x if you want to OD, you can potentially go higher, but good luck managing the brain damage.
-	var/amt = max(round(volume/3, 0.1), 1)
-	C?.mind?.experience_multiplier_reasons |= type
-	C?.mind?.experience_multiplier_reasons[type] = amt
 	return TRUE
 
 /datum/reagent/drug/maint/powder/on_mob_end_metabolize(mob/living/carbon/C)
-	C?.mind?.experience_multiplier_reasons[type] = null
-	C?.mind?.experience_multiplier_reasons -= type
 
 /datum/reagent/drug/maint/powder/overdose_process(mob/living/carbon/C)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 6, updating_health = FALSE)

@@ -30,13 +30,6 @@ TYPEINFO_DEF(/obj/machinery/computer)
 		return FALSE
 	return TRUE
 
-/obj/machinery/computer/examine(mob/user)
-	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("computer", 10)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		. += result.create_tooltip("An older model from ThinkTronic's <i>Laika</i> series of computers. The chassis is large and difficult to move, yet remains popular due to it's reliability.", body_only = TRUE)
-
 /obj/machinery/computer/update_overlays()
 	. = ..()
 	if(icon_keyboard)

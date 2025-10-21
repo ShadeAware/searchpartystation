@@ -13,23 +13,6 @@
 			to_chat(attacker, span_danger("[p_they(TRUE)] do not have a [parse_zone(target_zone)]!"))
 			return MOB_ATTACKEDBY_FAIL
 
-		// If we aren't being hit by ourself, roll for accuracy.
-		if(attacker != src)
-			var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
-			var/roll
-			if(HAS_TRAIT(attacker, TRAIT_PERFECT_ATTACKER))
-				roll = SUCCESS
-			else
-				roll = attacker.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7, src).outcome
-
-			switch(roll)
-				if(CRIT_FAILURE)
-					visible_message(span_danger("\The [attacker] swings at [src] with [attacking_item], narrowly missing!"))
-					return MOB_ATTACKEDBY_MISS // lol owned
-
-				if(FAILURE)
-					hit_zone = get_random_valid_zone()
-
 		affecting = get_bodypart(hit_zone)
 		hit_zone_text = affecting.plaintext_zone
 

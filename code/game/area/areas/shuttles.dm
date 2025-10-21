@@ -120,10 +120,6 @@
 		span_statsgood("Thousands of scratches adorn the view ports from the unspeakable volume of particles brushing against them.") = 1
 	)
 
-/area/shuttle/arrival/on_joining_game(mob/living/boarder)
-	. = ..()
-	boarder.update_parallax_teleport()
-
 /area/shuttle/pod_1
 	name = "Escape Pod One"
 	area_flags = NONE

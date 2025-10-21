@@ -218,30 +218,28 @@
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
 
-	var/roll = stat_roll(14, /datum/rpg_skill/skirmish, defender = target).outcome
-
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)
 		var/hurt_prob = holding[I]
 		if(prob(hurt_prob) && I.on_disarm_attempt(target, src))
 			return
 
-	if(roll == CRIT_SUCCESS)
-		var/shove_dir = get_dir(loc, target.loc)
-		var/turf/target_shove_turf = get_step(target.loc, shove_dir)
-		var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
 
-		var/directional_blocked = FALSE
-		var/can_hit_something = !target.buckled
+	var/shove_dir = get_dir(loc, target.loc)
+	var/turf/target_shove_turf = get_step(target.loc, shove_dir)
+	var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
 
-		//Are we hitting anything? or
-		if(!target.Move(target_shove_turf, shove_dir))
-			shove_blocked = TRUE
+	var/directional_blocked = FALSE
+	var/can_hit_something = !target.buckled
 
-		if(!can_hit_something)
-			//Don't hit people through windows, ok?
-			if(!directional_blocked && SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_COLLIDE, src, target, shove_blocked) & COMSIG_CARBON_SHOVE_HANDLED)
-				return
+	//Are we hitting anything? or
+	if(!target.Move(target_shove_turf, shove_dir))
+		shove_blocked = TRUE
+
+	if(!can_hit_something)
+		//Don't hit people through windows, ok?
+		if(!directional_blocked && SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_COLLIDE, src, target, shove_blocked) & COMSIG_CARBON_SHOVE_HANDLED)
+			return
 
 		target.Knockdown(SHOVE_KNOCKDOWN_SOLID)
 		target.visible_message(
@@ -275,19 +273,6 @@
 	)
 
 	var/append_message = ""
-
-	if(roll >= SUCCESS && length(target.held_items))
-		var/list/dropped = list()
-		for(var/obj/item/I in target.held_items)
-			if(target.dropItemToGround(I))
-				target.visible_message(
-					span_warning("<b>[target]</b> loses [target.p_their()] grip on [I]."),
-					null,
-					null,
-					COMBAT_MESSAGE_RANGE
-				)
-				dropped += I
-		append_message = "causing them to drop [length(dropped) ? english_list(dropped) : "nothing"]"
 
 	log_combat(src, target, "shoved", addition = append_message)
 

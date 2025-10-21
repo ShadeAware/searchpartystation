@@ -72,17 +72,8 @@
 
 	var/list/learned_recipes //List of learned recipe TYPES.
 
-	///List of skills the user has received a reward for. Should not be used to keep track of currently known skills. Lazy list because it shouldnt be filled often
-	var/list/skills_rewarded
-	///Assoc list of skills. Use SKILL_LVL to access level, and SKILL_EXP to access skill's exp.
-	var/list/known_skills = list()
 	///Weakref to thecharacter we joined in as- either at roundstart or latejoin, so we know for persistent scars if we ended as the same person or not
 	var/datum/weakref/original_character
-
-	///Skill multiplier, adjusts how much xp you get/loose from adjust_xp. Dont override it directly, add your reason to experience_multiplier_reasons and use that as a key to put your value in there.
-	var/experience_multiplier = 1
-	///Skill multiplier list, just slap your multiplier change onto this with the type it is coming from as key.
-	var/list/experience_multiplier_reasons = list()
 
 	/// A lazy list of statuses to add next to this mind in the traitor panel
 	var/list/special_statuses

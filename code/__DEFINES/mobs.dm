@@ -426,8 +426,12 @@
 
 //MINOR TWEAKS/MISC
 #define AGE_MIN 18 //youngest a character can be
-#define AGE_MAX 85 //oldest a character can be
-#define AGE_MINOR 20  //legal age of space drinking and smoking
+#define AGE_MAX 120 //oldest a character can be
+#define CHRONOAGE_MIN 18 //shortest time a character can have existed
+#define CHRONOAGE_MAX 500 //longest time a character can have existed (roughly YTD start of biological immortality)
+#define MACHINEAGE_MIN 1 //shortest time a VIAI character can have existed
+#define MACHINEAGE_MAX 500 //longest time a VIAI character can have existed
+#define AGE_MINOR 21  //legal age of space drinking and smoking
 #define WIZARD_AGE_MIN 30 //youngest a wizard can be
 #define APPRENTICE_AGE_MIN 29 //youngest an apprentice can be
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets

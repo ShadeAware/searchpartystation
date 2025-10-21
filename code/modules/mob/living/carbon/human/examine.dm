@@ -176,7 +176,6 @@
 	var/list/body_zones_covered = get_covered_body_zones(TRUE) //This is a bitfield of the body_zones_covered. Not parts. Yeah. Sucks.
 	var/list/bodyparts = sort_list(src.bodyparts, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
 
-	var/visible_bodyparts = 0
 	// Potentially pickweight from this list after a medicine check.
 	var/list/fucked_reasons = list()
 
@@ -202,7 +201,6 @@
 			continue
 
 		else
-			visible_bodyparts++
 			if((body_part.brute_dam + body_part.burn_dam) >= body_part.max_damage * 0.8)
 				fucked_reasons["[t_His] [body_part.plaintext_zone] is greviously injured."] = 3
 
@@ -384,29 +382,6 @@
 			. += span_notice(flavor_text_link)
 
 	// AT THIS POINT WE'RE DONE WITH EXAMINE STUFF
-	var/mob/living/living_user = user
-	if(user == src && stat != CONSCIOUS || !istype(living_user) || !living_user.stats?.cooldown_finished("examine_medical_flavortext_[REF(src)]"))
-		return
-
-	var/possible_invisible_damage = getToxLoss() > 20 || getBrainLoss()
-
-	if(!length(get_missing_limbs()) && (possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
-		var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/anatomia)
-		switch(result.outcome)
-			if(SUCCESS, CRIT_SUCCESS)
-				spawn(0)
-					result.do_skill_sound(living_user)
-					if(possible_invisible_damage && living_user.stats.cooldown_finished("found_invisible_damage_[REF(src)]"))
-						to_chat(living_user, result.create_tooltip("Something is not right, this person is not well. You can feel it in your very core."))
-						living_user.stats.set_cooldown("found_invisible_damage_[REF(src)]", INFINITY) // Never again
-
-					else if(length(fucked_reasons))
-						to_chat(living_user, result.create_tooltip("[t_He] does not look long for this world. [pick_weight(fucked_reasons)]"))
-
-					else
-						to_chat(living_user, result.create_tooltip("[t_He] appears to be in great health."))
-
-		living_user.stats.set_cooldown("examine_medical_flavortext_[REF(src)]", 20 MINUTES)
 
 /**
  * Shows any and all examine text related to any status effects the user has.

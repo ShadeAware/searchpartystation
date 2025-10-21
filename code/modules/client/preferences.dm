@@ -9,7 +9,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// Ensures that we always load the last used save, QOL
 	var/default_slot = 1
 	/// The maximum number of slots we're allowed to contain
-	var/max_save_slots = 10
+	var/max_save_slots = 20
 
 	/// Bitflags for communications that are muted
 	var/muted = NONE
@@ -28,6 +28,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// Cached list of keybindings, mapping keys to actions.
 	/// For example, by default would have "X" -> list("swap_hands")
 	var/list/key_bindings_by_key = list()
+
+	var/list/storyteller_stats = list()
 
 	var/toggles = TOGGLES_DEFAULT
 	var/db_flags = NONE

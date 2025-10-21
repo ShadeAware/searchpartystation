@@ -264,15 +264,6 @@
 		viewing_camera.visible_message("[src]'s lens rotates and zooms into something.")
 		playsound(viewing_camera, 'sound/machines/camera_zoom.ogg', 50, FALSE, ignore_walls = FALSE)
 
-	var/mob/living/target_examined = examinify
-	if(target_examined.stats.cooldown_finished("ai_examine"))
-		var/datum/roll_result/result = target_examined.stat_roll(13, /datum/rpg_skill/extrasensory)
-		switch(result.outcome)
-			if(SUCCESS, CRIT_SUCCESS)
-				target_examined.stats.set_cooldown("ai_examine", 1 MINUTE)
-				result.do_skill_sound(target_examined)
-				to_chat(target_examined, result.create_tooltip("A nearby camera has fixated on you."))
-
 	return TRUE
 
 /mob/living/silicon/ai/broadcast_examine(atom/examined)

@@ -632,12 +632,6 @@
 	if(!.)
 		return
 
-	examinify.disco_flavor(
-		src,
-		get_dist(src, examinify) >= 1,
-		is_station_level(get_step(examinify, 0)?.z)
-	)
-
 /// Tells nearby mobs about our examination.
 /mob/proc/broadcast_examine(atom/examined)
 	if(examined == src)
@@ -897,7 +891,7 @@
 
 	log_game("[key_name(usr)] used the respawn button.")
 
-	to_chat(usr, span_boldnotice("Please roleplay correctly!"))
+	to_chat(usr, span_boldnotice("You have been sent back to the lobby. Act in good faith."))
 
 	if(!client)
 		log_game("[key_name(usr)] respawn failed due to disconnect.")

@@ -877,15 +877,6 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 		)
 		return
 
-	var/datum/roll_result/result = user.stat_roll(9, /datum/rpg_skill/handicraft)
-	switch(result.outcome)
-		if(FAILURE, CRIT_FAILURE)
-			user.apply_damage(5, BURN, user.get_active_hand())
-			to_chat(user, result.create_tooltip("Your eagerness to ignite [src] in a stylish fashion has shrouded your care. Your finger is bathed in the flame for a brief moment."))
-		if(SUCCESS, CRIT_SUCCESS)
-			to_chat(user, result.create_tooltip("After a few attempts, you manage to light [src]."))
-	user.visible_message(span_notice("After a few attempts, [user] manages to light [src]."))
-
 /obj/item/lighter/attack(mob/living/carbon/M, mob/living/carbon/user)
 	. = ..()
 	if(.)

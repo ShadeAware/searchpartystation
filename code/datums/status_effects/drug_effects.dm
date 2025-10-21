@@ -86,8 +86,6 @@
 
 	human_owner.sound_environment_override = SOUND_ENVIRONMENT_DRUGGED //not realistic but very immersive
 
-	human_owner.apply_status_effect(/datum/status_effect/skill_mod/cannabis_magic)
-	human_owner.apply_status_effect(/datum/status_effect/skill_mod/cannabis_eyes)
 	return TRUE
 
 /datum/status_effect/stoned/on_remove()
@@ -106,9 +104,6 @@
 	REMOVE_TRAIT(human_owner, TRAIT_CLUMSY, type)
 
 	human_owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
-
-	human_owner.remove_status_effect(/datum/status_effect/skill_mod/cannabis_magic)
-	human_owner.remove_status_effect(/datum/status_effect/skill_mod/cannabis_eyes)
 
 /atom/movable/screen/alert/status_effect/stoned
 	name = "Stoned"

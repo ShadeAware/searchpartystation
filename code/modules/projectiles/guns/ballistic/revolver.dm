@@ -135,26 +135,6 @@
 	misfire_probability = 0
 	misfire_percentage_increment = 25 //about 1 in 4 rounds, which increases rapidly every shot
 
-/obj/item/gun/ballistic/revolver/detective/examine(mob/user)
-	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("detgun_examine",)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		. += result.create_tooltip("No mere firearm – a cultural artifact. An all-time classic, chambered in .38 Special and packing six rounds, perfect for six criminals. ", body_only = TRUE)
-
-/obj/item/gun/ballistic/revolver/detective/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
-	. = ..()
-	if(user.mind?.assigned_role?.title != JOB_DETECTIVE)
-		return
-
-	var/datum/roll_result/result = user.get_examine_result("detgun_suicide_flavor", /datum/rpg_skill/extrasensory, only_once = TRUE)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		to_chat(
-			user,
-			result.create_tooltip("You should shoot yourself with it. Preferably in the head."),
-		)
-
 /obj/item/gun/ballistic/revolver/syndicate
 	name = "\improper Syndicate Revolver"
 	desc = "A modernized 7 round revolver manufactured by Waffle Co. Uses .357 ammo."

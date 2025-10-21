@@ -89,23 +89,6 @@
 		return
 
 	var/target_zone = throwingdatum.target_zone
-	var/mob/thrower = throwingdatum.thrower
-	if(ishuman(hit_atom))
-		var/mob/living/carbon/human/victim = hit_atom
-		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
-		var/roll = SUCCESS
-
-		if(HAS_TRAIT(thrower, TRAIT_PERFECT_ATTACKER) || !ishuman(thrower))
-			roll = SUCCESS
-
-		else
-			var/mob/living/carbon/human/user = thrower
-			roll = user.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7, src).outcome
-
-		switch(roll)
-			if(FAILURE, CRIT_FAILURE)
-				target_zone = victim.get_random_valid_zone()
-
 	shatter(hit_atom, target_zone)
 	return TRUE
 

@@ -1459,21 +1459,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!delay && !tool_start_check(user, amount))
 		return
 
-	var/skill_modifier = 1
-
-	delay *= toolspeed * skill_modifier
-
-	if(delay && iscarbon(user) && user.stats.cooldown_finished("use_tool")) // Fuck borgs!!!
-		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/handicraft)
-		switch(result.outcome)
-			if(CRIT_SUCCESS)
-				result.do_skill_sound(user)
-				to_chat(user, result.create_tooltip("A swift execution. A job well done."))
-				delay = delay * 0.25
-
-
-		user.stats.set_cooldown("use_tool", max(delay, 10 SECONDS))
-
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)
 

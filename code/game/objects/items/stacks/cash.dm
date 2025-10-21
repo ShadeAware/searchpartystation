@@ -1,6 +1,9 @@
 /obj/item/stack/spacecash  //Don't use base space cash stacks. Any other space cash stack can merge with them, and could cause potential money duping exploits.
-	name = "wad of Federation marks"
-	singular_name = "Federation mark"
+	name = "wad of printed TAPS"
+	singular_name = "Confederation TAP"
+	desc = "A bundle of printed TAPS, <i>Traceable units of Appreciable Public Service</i>. \
+	Scrip like this functions as an pseudo-currency and social credit in situations where it must be numerically quantified. \
+	Out this far, its only really useful for book-keeping and ordering supplies."
 
 	stack_name = "wad"
 	multiple_gender = NEUTER
@@ -27,16 +30,9 @@
 /obj/item/stack/spacecash/update_desc()
 	. = ..()
 	if(amount == 1)
-		desc = "It is worth [value]."
+		desc += "<b>It is worth [value].</b>"
 	else
-		desc = "There are [amount] bills each worth [value]."
-
-/obj/item/stack/spacecash/examine(mob/user)
-	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("fedmark_examine", 7)
-	if(result?.outcome >= SUCCESS)
-		result.do_skill_sound(user)
-		. += result.create_tooltip("The post-war currency instated by the Federation after its formation in '29.", body_only = TRUE)
+		desc += "<b>There are [amount] bills each worth [value].</b>"
 
 /obj/item/stack/spacecash/get_item_credit_value()
 	return (amount*value)
@@ -60,7 +56,7 @@
 
 /obj/item/stack/spacecash/c1
 	icon_state = "spacecash1"
-	singular_name = "one mark bill"
+	singular_name = "one TAP bill"
 	value = 1
 	merge_type = /obj/item/stack/spacecash/c1
 
@@ -72,13 +68,13 @@
 
 /obj/item/stack/spacecash/c100
 	icon_state = "spacecash100"
-	singular_name = "one hundred mark bill"
+	singular_name = "one hundred TAP bill"
 	value = 100
 	merge_type = /obj/item/stack/spacecash/c100
 
 /obj/item/stack/spacecash/c1000
 	icon_state = "spacecash1000"
-	singular_name = "one thousand mark bill"
+	singular_name = "one thousand TAP bill"
 	value = 1000
 	merge_type = /obj/item/stack/spacecash/c1000
 
